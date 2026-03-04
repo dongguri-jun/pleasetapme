@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#479FF8">
+<title>PleaseTapMe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sky: #479FF8;
+  --sky-dark: #2D5A87;
+  --sky-deeper: #1e3f5e;
+  --white: #FFFFFF;
+  --red: #E14D63;
+  --red-dark: #c13a4f;
+  --red-shadow: #a02e3f;
+  --text-dark: #1A1A1A;
+  --text-mid: #2D5A87;
+  --text-light: #6a9fd8;
+  --card-shadow: rgba(0,0,0,0.15);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--sky);
+  color: var(--text-dark);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Pixel dot pattern on background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Card ── */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px 24px;
+  box-shadow:
+    0 6px 0 rgba(0,0,0,0.1),
+    0 12px 24px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+/* ── Brand ── */
+.brand {
+  margin-bottom: 24px;
+}
+
+.brand-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.brand h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.4;
+}
+
+.brand h1 em {
+  font-style: normal;
+  color: var(--red);
+}
+
+.brand .tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-mid);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* ── Address box ── */
+.address-box {
+  background: #f0f6ff;
+  border: 2px dashed #b8d4f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  font-family: 'Inter', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sky-dark);
+  word-break: break-all;
+}
+
+/* ── Wallet buttons ── */
+.wallet-section { margin-bottom: 8px; }
+
+.section-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+
+.wallet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.wallet-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.wallet-btn:active { transform: translateY(3px); }
+
+.wallet-btn.wos {
+  background: #f7931a;
+  box-shadow: 0 4px 0 #c87615;
+}
+.wallet-btn.wos:active { box-shadow: 0 1px 0 #c87615; }
+
+.wallet-btn.phoenix {
+  background: #8b5cf6;
+  box-shadow: 0 4px 0 #6d3ad4;
+}
+.wallet-btn.phoenix:active { box-shadow: 0 1px 0 #6d3ad4; }
+
+.wallet-btn.blink {
+  background: #3b82f6;
+  box-shadow: 0 4px 0 #2563d4;
+}
+.wallet-btn.blink:active { box-shadow: 0 1px 0 #2563d4; }
+
+.wallet-btn.zeus {
+  background: #eab308;
+  box-shadow: 0 4px 0 #b88d06;
+}
+.wallet-btn.zeus:active { box-shadow: 0 1px 0 #b88d06; }
+
+.wallet-btn::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.status {
+  color: var(--text-mid);
+  font-size: 11px;
+  margin-top: 8px;
+  min-height: 16px;
+  font-weight: 500;
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #b0c8e8;
+  font-size: 10px;
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: #e8f0fb;
+}
+
+/* ── QR ── */
+#qr-canvas {
+  background: var(--white);
+  border: 3px solid #e8f0fb;
+  border-radius: 16px;
+  padding: 16px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-mid);
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active { transform: translateY(2px); }
+
+.btn-cta {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--white);
+  background: var(--red);
+  border: none;
+  border-radius: 14px;
+  padding: 18px 24px;
+  box-shadow: 0 5px 0 var(--red-shadow);
+  letter-spacing: 0.5px;
+}
+
+.btn-cta:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--red-shadow);
+}
+
+/* ── Setup link (on payment page) ── */
+.setup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-decoration: none;
+  padding: 6px 14px;
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 20px;
+  transition: all 0.15s;
+  margin-bottom: 20px;
+}
+
+.setup-link:active { transform: translateY(1px); }
+
+/* ── Back link ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+/* ── Setup page ── */
+.setup-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.setup-desc {
+  color: var(--text-mid);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.input-group {
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--text-dark);
+  background: #f8fbff;
+  border: 2px solid #d0e2f5;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input-group input:focus { border-color: var(--sky); }
+.input-group input::placeholder { color: #b0c8e8; }
+
+.result-box {
+  background: #f0f6ff;
+  border: 2px dashed #b8d4f0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  word-break: break-all;
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sky-dark);
+  text-align: left;
+  min-height: 44px;
+}
+
+.result-placeholder {
+  color: #b0c8e8;
+  font-style: italic;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.setup-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.setup-actions .btn { flex: 1; font-size: 12px; padding: 12px 10px; }
+.setup-actions .btn-primary {
+  color: var(--white);
+  background: var(--sky);
+  border-color: var(--sky);
+  box-shadow: 0 3px 0 var(--sky-dark);
+}
+.setup-actions .btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--sky-dark);
+}
+
+.steps-card {
+  text-align: left;
+  padding: 20px;
+  background: #f8fbff;
+  border: 2px solid #e8f0fb;
+  border-radius: 14px;
+}
+
+.steps-card h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  margin-bottom: 14px;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+}
+
+.steps-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.5;
+  padding: 7px 0;
+}
+
+.steps-list li + li {
+  border-top: 2px solid #e8f0fb;
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--white);
+  background: var(--sky);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.steps-list strong { color: var(--text-dark); }
+
+/* ── Landing page ── */
+.error-container { text-align: center; }
+
+.landing-desc {
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.landing-note {
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+  margin-top: 16px;
+}
+
+.landing-brand h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
+  color: var(--white);
+  text-shadow: 0 3px 0 rgba(0,0,0,0.15);
+  line-height: 1.5;
+}
+
+.landing-brand h1 em {
+  font-style: normal;
+  color: var(--red);
+  text-shadow: 0 3px 0 var(--red-shadow);
+}
+
+.landing-brand .brand-icon {
+  font-size: 52px;
+  filter: drop-shadow(0 3px 0 rgba(0,0,0,0.15));
+}
+
+.landing-brand .tagline {
+  color: rgba(255,255,255,0.8);
+  font-size: 11px;
+  font-family: 'Press Start 2P', monospace;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.footer a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 10px;
+  font-family: 'Press Start 2P', monospace;
+  transition: color 0.15s;
+}
+
+.footer a:hover { color: rgba(255,255,255,0.8); }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Setup view -->
+  <div id="setup-view" class="hidden">
+    <div class="card">
+      <a href="#" class="back-link" onclick="location.hash='';location.reload();return false;">&larr; Home</a>
+      <div class="brand">
+        <div class="brand-icon">&#9889;</div>
+        <h1>Please<em>Tap</em>Me</h1>
+      </div>
+      <p class="setup-title">NFC KEYRING SETUP</p>
+      <p class="setup-desc">Lightning Address를 입력하면 NFC 태그에 기록할 URL이 생성됩니다.</p>
+
+      <div class="input-group">
+        <label>Lightning Address</label>
+        <input type="text" id="setup-input" placeholder="yourname@walletofsatoshi.com" autocomplete="off" autocapitalize="off" spellcheck="false">
+      </div>
+
+      <div class="result-box" id="setup-result">
+        <span class="result-placeholder">위에 주소를 입력하세요</span>
+      </div>
+
+      <div class="setup-actions">
+        <button class="btn btn-primary" id="setup-copy-btn" onclick="copySetupURL()" style="opacity:0.5;pointer-events:none;">
+          Copy NFC URL
+        </button>
+        <button class="btn" id="setup-test-btn" onclick="testSetupURL()" style="opacity:0.5;pointer-events:none;">
+          Test
+        </button>
+      </div>
+
+      <div class="steps-card">
+        <h3>NFC 태그 기록 방법</h3>
+        <ol class="steps-list">
+          <li><span class="step-num">1</span><span><strong>NFC Tools</strong> 앱 설치 (무료)</span></li>
+          <li><span class="step-num">2</span><span><strong>Write</strong> 탭 선택</span></li>
+          <li><span class="step-num">3</span><span><strong>Add a record</strong> &rarr; URL/URI</span></li>
+          <li><span class="step-num">4</span><span>위에서 복사한 URL 붙여넣기</span></li>
+          <li><span class="step-num">5</span><span>NFC 태그에 폰 갖다 대기</span></li>
+          <li><span class="step-num">6</span><span>기록 완료 후 테스트!</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Landing (no address) -->
+  <div id="error-view" class="error-container hidden">
+    <div class="landing-brand">
+      <div class="brand-icon">&#9889;</div>
+      <h1>Please<em>Tap</em>Me</h1>
+      <p class="tagline">NFC LIGHTNING KEYRING</p>
+    </div>
+    <p class="landing-desc">
+      NFC 키링으로<br>Lightning 결제를 받아보세요.
+    </p>
+    <button class="btn btn-cta" onclick="location.hash='setup';location.reload();">
+      TAP TO SETUP &#9889;
+    </button>
+    <p class="landing-note">이미 키링이 있나요? NFC를 태깅하세요.</p>
+  </div>
+
+  <!-- Main payment view -->
+  <div id="main-view" class="hidden">
+    <div class="card">
+      <div style="text-align:center;">
+        <a href="#setup" class="setup-link" onclick="location.hash='setup';location.reload();return false;">Setup My Keyring &rarr;</a>
+      </div>
+      <div class="brand">
+        <div class="brand-icon">&#9889;</div>
+        <h1>Please<em>Tap</em>Me</h1>
+        <p class="tagline">Lightning Network Payment</p>
+      </div>
+
+      <div class="address-box" id="address-display"></div>
+
+      <div class="wallet-section">
+        <p class="section-label">SELECT WALLET</p>
+        <div class="wallet-grid">
+          <button class="wallet-btn wos" onclick="openWallet('wos')">Wallet of Satoshi</button>
+          <button class="wallet-btn phoenix" onclick="openWallet('phoenix')">Phoenix</button>
+          <button class="wallet-btn blink" onclick="openWallet('blink')">Blink</button>
+          <button class="wallet-btn zeus" onclick="openWallet('zeus')">Zeus</button>
+        </div>
+      </div>
+      <p class="status" id="pay-status"></p>
+
+      <div class="divider">or scan</div>
+
+      <div style="text-align:center;">
+        <div id="qr-canvas"></div>
+      </div>
+      <br>
+
+      <button class="btn" id="copy-btn" onclick="copyAddress()">
+        Copy Address
+      </button>
+    </div>
+  </div>
+
+  <div class="footer" id="footer">
+    <a href="#setup" id="footer-link" onclick="location.hash='setup';location.reload();">pleasetap.me</a>
+  </div>
+</div>
+
+<!-- QR Code generator (MIT license) -->
+<script>
+var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this.parsedData=[];for(var b=[],d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);g>65536?(f[0]=240|(1835008&g)>>>18,f[1]=128|(258048&g)>>>12,f[2]=128|(4032&g)>>>6,f[3]=128|63&g):g>2048?(f[0]=224|(61440&g)>>>12,f[1]=128|(4032&g)>>>6,f[2]=128|63&g):g>128?(f[0]=192|(1984&g)>>>6,f[1]=128|63&g):f[0]=g,b.push(f)}this.parsedData=Array.prototype.concat.apply([],b),this.parsedData.length!=this.data.length&&(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function i(a,b){if(void 0==a.length)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function j(a,b){this.totalCount=a,this.dataCount=b}function k(){this.buffer=[],this.length=0}var c={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},d={L:1,M:0,Q:3,H:2},e={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},f=function(){var a=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],b=function(b){var c=a[b-1];return c?c:void 0};return{getBCHTypeInfo:function(a){for(var b=a<<10;g(b)-g(1335)>=0;)b^=1335<<g(b)-g(1335);return(a<<10|b)^21522},getBCHTypeNumber:function(a){for(var b=a<<12;g(b)-g(7973)>=0;)b^=7973<<g(b)-g(7973);return a<<12|b},getPatternPosition:b,getMask:function(a,b,c){switch(a){case e.PATTERN000:return(b+c)%2==0;case e.PATTERN001:return b%2==0;case e.PATTERN010:return c%3==0;case e.PATTERN011:return(b+c)%3==0;case e.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case e.PATTERN101:return b*c%2+b*c%3==0;case e.PATTERN110:return(b*c%2+b*c%3)%2==0;case e.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new i([1],0),c=0;c<a;c++)b=b.multiply(new i([1,h.gexp(c)],0));return b},getLengthInBits:function(a,b){if(b>=1&&b<10)switch(a){case c.MODE_NUMBER:return 10;case c.MODE_ALPHA_NUM:return 9;case c.MODE_8BIT_BYTE:return 8;case c.MODE_KANJI:return 8}else if(b<27)switch(a){case c.MODE_NUMBER:return 12;case c.MODE_ALPHA_NUM:return 11;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 10}else{if(!(b<41))throw new Error("type:"+a+" num:"+b);switch(a){case c.MODE_NUMBER:return 14;case c.MODE_ALPHA_NUM:return 13;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 12}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=10*(Math.abs(100*k/b/b-50)/5)}}},g=function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},h=function(){for(var a=new Array(256),b=new Array(256),c=0;c<8;c++)a[c]=1<<c;for(var c=8;c<256;c++)a[c]=a[c-4]^a[c-5]^a[c-6]^a[c-8];for(var c=0;c<255;c++)b[a[c]]=c;return{glog:function(a){if(a<1)throw new Error("glog("+a+")");return b[a]},gexp:function(b){for(;b<0;)b+=255;for(;b>=256;)b-=255;return a[b]}}}();a.prototype={getLength:function(){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b){var c=new a(b);this.dataList.push(c),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b]},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b){for(var c=-1;c<=7;c++)if(!(a+c<=-1||this.moduleCount<=a+c))for(var d=-1;d<=7;d++)b+d<=-1||this.moduleCount<=b+d||(this.modules[a+c][b+d]=0<=c&&c<=6&&(0==d||6==d)||0<=d&&d<=6&&(0==c||6==c)||2<=c&&c<=4&&2<=d&&d<=4)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=f.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=e*c,g=0;g<this.modules[e].length;g++){var h=g*c,i=this.modules[e][g];i&&(d.bindingContext(0),d.bindingContext.bindingContext(h,f),d.bindingContext.bindingContext(h+c,f),d.bindingContext.bindingContext(h+c,f+c),d.bindingContext.bindingContext(h,f+c),d.bindingContext())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6]&&(this.modules[a][6]=a%2==0),null==this.modules[6][a]&&(this.modules[6][a]=a%2==0)},setupPositionAdjustPattern:function(){for(var a=f.getPatternPosition(this.typeNumber),b=0;b<a.length;b++)for(var c=0;c<a.length;c++){var d=a[b],e=a[c];if(null==this.modules[d][e])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)this.modules[d+g][e+h]=-2==g||2==g||-2==h||2==h||0==g&&0==h}},setupTypeNumber:function(a){for(var b=f.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=f.getBCHTypeInfo(c),e=0;e<15;e++){var g=!a&&1==(d>>e&1);e<6?this.modules[e][8]=g:e<8?this.modules[e+1][8]=g:this.modules[this.moduleCount-15+e][8]=g}for(var e=0;e<15;e++){var g=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1]=g:e<9?this.modules[8][15-e-1+1]=g:this.modules[8][15-e-1]=g}this.modules[this.moduleCount-8][8]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,g=0,h=this.moduleCount-1;h>0;h-=2)for(6==h&&h--;;){for(var i=0;i<2;i++)if(null==this.modules[d][h-i]){var j=!1;g<a.length&&(j=1==(a[g]>>>e&1)),f.getMask(b,d,h-i)&&(j=!j),this.modules[d][h-i]=j,e--,-1==e&&(g++,e=7)}if(d+=c,d<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,d){for(var e=j.getRSBlocks(a,c),g=new k,h=0;h<d.length;h++){var i=d[h];g.put(i.mode,4),g.put(i.getLength(),f.getLengthInBits(i.mode,a)),i.write(g)}for(var l=0,h=0;h<e.length;h++)l+=e[h].dataCount;if(g.getLengthInBits()>8*l)throw new Error("code length overflow. ("+g.getLengthInBits()+">"+8*l+")");for(g.getLengthInBits()+4<=8*l&&g.put(0,4);g.getLengthInBits()%8!=0;)g.putBit(!1);for(;!(g.getLengthInBits()>=8*l||(g.put(b.PAD0,8),g.getLengthInBits()>=8*l));)g.put(b.PAD1,8);return b.createBytes(g,e)},b.createBytes=function(a,b){for(var c=0,d=0,e=0,f=new Array(b.length),g=new Array(b.length),j=0;j<b.length;j++){var k=b[j].dataCount,l=b[j].totalCount-k;d=Math.max(d,k),e=Math.max(e,l),f[j]=new Array(k);for(var m=0;m<f[j].length;m++)f[j][m]=255&a.buffer[m+c];c+=k;var n=h.glog(i.prototype.getAt.call({num:new Array(l+1)},0));n=l;for(var o=new Array(n),m=0;m<o.length;m++)o[m]=h.gexp(m);for(var p=new i(o,0),q=new i(f[j],p.getLength()-1),r=q.mod(p),m=0;m<l;m++){var s=m+r.getLength()-l;g[j]=g[j]||new Array(l),g[j][m]=s>=0?r.getAt(s):0}}for(var t=new Array(function(){for(var a=0,c=0;c<b.length;c++)a+=b[c].totalCount;return a}()),u=0,m=0;m<d;m++)for(var j=0;j<b.length;j++)m<f[j].length&&(t[u++]=f[j][m]);for(var m=0;m<e;m++)for(var j=0;j<b.length;j++)m<(g[j]||[]).length&&(t[u++]=g[j][m]);return t},i.prototype={getAt:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),c=0;c<this.getLength();c++)for(var d=0;d<a.getLength();d++)b[c+d]^=h.gexp(h.glog(this.getAt(c))+h.glog(a.getAt(d)));return new i(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=h.glog(this.getAt(0))-h.glog(a.getAt(0)),c=new Array(this.getLength()),d=0;d<this.getLength();d++)c[d]=this.getAt(d);for(var d=0;d<a.getLength();d++)c[d]^=h.gexp(h.glog(a.getAt(d))+b);return new i(c,0).mod(a)}},j.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],j.getRSBlocks=function(a,b){var c=j.getRsBlockTable(a,b);if(void 0==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length/3,e=[],f=0;f<d;f++)for(var g=c[3*f+0],h=c[3*f+1],i=c[3*f+2],k=0;k<g;k++)e.push(new j(h,i));return e},j.getRsBlockTable=function(a,b){switch(b){case d.L:return j.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return j.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return j.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return j.RS_BLOCK_TABLE[4*(a-1)+3];default:return}},k.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}},QRCode=b}();
+</script>
+
+<script>
+(function() {
+  // Route: #setup or #ln=address
+  var hash = window.location.hash;
+
+  // Setup mode
+  if (hash === '#setup') {
+    document.getElementById('setup-view').classList.remove('hidden');
+
+    var input = document.getElementById('setup-input');
+    var result = document.getElementById('setup-result');
+    var copyBtn = document.getElementById('setup-copy-btn');
+    var testBtn = document.getElementById('setup-test-btn');
+    var generatedURL = '';
+
+    window.testSetupURL = function() {
+      if (!generatedURL) return;
+      var val = input.value.trim();
+      window.location.hash = 'ln=' + val;
+      window.location.reload();
+    };
+
+    input.addEventListener('input', function() {
+      var val = input.value.trim();
+      if (val && val.indexOf('@') !== -1) {
+        generatedURL = 'https://pleasetap.me#ln=' + val;
+        result.textContent = generatedURL;
+        result.classList.remove('result-placeholder');
+        copyBtn.style.opacity = '1';
+        copyBtn.style.pointerEvents = 'auto';
+        testBtn.style.opacity = '1';
+        testBtn.style.pointerEvents = 'auto';
+      } else {
+        generatedURL = '';
+        result.innerHTML = '<span class="result-placeholder">\uc704\uc5d0 \uc8fc\uc18c\ub97c \uc785\ub825\ud558\uc138\uc694</span>';
+        copyBtn.style.opacity = '0.5';
+        copyBtn.style.pointerEvents = 'none';
+        testBtn.style.opacity = '0.5';
+        testBtn.style.pointerEvents = 'none';
+      }
+    });
+
+    window.copySetupURL = function() {
+      if (!generatedURL) return;
+      var btn = document.getElementById('setup-copy-btn');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(generatedURL).then(function() {
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy NFC URL'; }, 2000);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = generatedURL;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy NFC URL'; }, 2000);
+      }
+    };
+
+    return;
+  }
+
+  // Payment mode: parse Lightning Address
+  var lnAddress = '';
+
+  if (hash && hash.indexOf('#ln=') === 0) {
+    lnAddress = decodeURIComponent(hash.substring(4));
+  }
+
+  if (!lnAddress || lnAddress.indexOf('@') === -1) {
+    document.getElementById('error-view').classList.remove('hidden');
+    document.getElementById('footer').classList.add('hidden');
+    return;
+  }
+
+  // Show main view
+  document.getElementById('main-view').classList.remove('hidden');
+  document.getElementById('address-display').textContent = lnAddress;
+
+  // Detect OS
+  var ua = navigator.userAgent || '';
+  var isAndroid = /android/i.test(ua);
+  var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // Build URIs
+  var lightningURI = 'lightning:' + lnAddress;
+
+  // Wallet-specific URI schemes
+  var walletSchemes = {
+    wos: 'walletofsatoshi:' + lnAddress,
+    phoenix: 'phoenix:' + lnAddress,
+    blink: 'blink:' + lnAddress,
+    zeus: 'zeusln:' + lnAddress,
+    bluewallet: 'bluewallet:lightning:' + lnAddress,
+    generic: lightningURI
+  };
+
+  // Generate QR code
+  try {
+    var qr = new QRCode(0, 2);
+    qr.addData(lightningURI.toUpperCase());
+    qr.make();
+
+    var size = 200;
+    var cellSize = size / qr.getModuleCount();
+    var canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#000000';
+    for (var r = 0; r < qr.getModuleCount(); r++) {
+      for (var c = 0; c < qr.getModuleCount(); c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect(c * cellSize, r * cellSize, cellSize + 1, cellSize + 1);
+        }
+      }
+    }
+    document.getElementById('qr-canvas').appendChild(canvas);
+  } catch(e) {
+    document.getElementById('qr-canvas').textContent = 'QR generation failed';
+  }
+
+  // Android: auto-redirect with generic lightning: URI
+  if (isAndroid) {
+    document.getElementById('pay-status').textContent = 'Opening wallet...';
+    sessionStorage.setItem('ptm_opened', Date.now());
+    setTimeout(function() {
+      window.location.href = lightningURI;
+    }, 600);
+  }
+
+  // Open specific wallet (with loop prevention)
+  var launching = false;
+
+  window.openWallet = function(wallet) {
+    if (launching) return;
+    launching = true;
+
+    var uri = walletSchemes[wallet] || lightningURI;
+    var statusEl = document.getElementById('pay-status');
+
+    sessionStorage.setItem('ptm_opened', Date.now());
+    window.location.href = uri;
+    statusEl.textContent = 'Wallet opened. Tap again if needed.';
+
+    // Reset after delay so user can tap again
+    setTimeout(function() { launching = false; }, 3000);
+  };
+
+  // Copy address
+  window.copyAddress = function() {
+    var btn = document.getElementById('copy-btn');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(lnAddress).then(function() {
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy Address'; }, 2000);
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = lnAddress;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = 'Copied!';
+      setTimeout(function() { btn.textContent = 'Copy Address'; }, 2000);
+    }
+  };
+})();
+</script>
+
+</body>
+</html>
