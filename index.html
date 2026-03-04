@@ -504,6 +504,95 @@ body::before {
 .footer a:hover { color: rgba(255,255,255,0.8); }
 
 .hidden { display: none !important; }
+
+/* ── Dark Mode ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky: #1a2a3a;
+    --sky-dark: #8ab4e0;
+    --sky-deeper: #0f1a26;
+    --white: #1e2a36;
+    --text-dark: #e8eef4;
+    --text-mid: #8ab4e0;
+    --text-light: #5a8ab8;
+    --card-shadow: rgba(0,0,0,0.4);
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .address-box {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: #8ab4e0;
+  }
+
+  .wallet-btn { color: #e8eef4; }
+  .wallet-btn.wos { background: #c67a15; box-shadow: 0 4px 0 #8f5810; }
+  .wallet-btn.phoenix { background: #6d45c4; box-shadow: 0 4px 0 #4e2e96; }
+  .wallet-btn.blink { background: #2d6ad4; box-shadow: 0 4px 0 #1e4a9a; }
+  .wallet-btn.zeus { background: #b89208; box-shadow: 0 4px 0 #8a6d06; }
+
+  .btn {
+    color: #8ab4e0;
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .btn-cta {
+    color: var(--white);
+    background: var(--red);
+    border: none;
+  }
+
+  .setup-actions .btn-primary {
+    color: #e8eef4;
+    background: #2d6ad4;
+    border-color: #2d6ad4;
+    box-shadow: 0 3px 0 #1e4a9a;
+  }
+
+  .setup-link {
+    color: #8ab4e0;
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .input-group input {
+    color: #e8eef4;
+    background: rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .input-group input::placeholder { color: #5a708a; }
+  .input-group input:focus { border-color: #479FF8; }
+
+  .result-box {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: #479FF8;
+  }
+
+  .steps-card {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .steps-list li + li { border-color: rgba(255,255,255,0.08); }
+
+  .divider { color: #3a5068; }
+  .divider::before, .divider::after { background: rgba(255,255,255,0.08); }
+
+  #qr-canvas { border-color: rgba(255,255,255,0.1); }
+
+  .landing-brand h1 { color: #e8eef4; }
+  .landing-desc { color: rgba(255,255,255,0.8); }
+  .landing-note { color: rgba(255,255,255,0.4); }
+
+  body::before {
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  }
+}
 </style>
 </head>
 <body>
