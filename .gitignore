@@ -1,0 +1,14 @@
+# OMC / Claude state
+.omc/
+.mcp.json
+
+# Backups
+*.backup
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

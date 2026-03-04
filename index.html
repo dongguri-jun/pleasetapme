@@ -6,7 +6,21 @@
 <meta name="theme-color" content="#479FF8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a2a3a" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
-<title>PleaseTapMe</title>
+<title>PleaseTapMe - NFC Lightning Payment Keyring</title>
+<meta name="description" content="NFC 키링으로 Bitcoin Lightning 결제를 받아보세요. 태그 한 번이면 끝.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="PleaseTapMe ⚡">
+<meta property="og:description" content="NFC 키링으로 Bitcoin Lightning 결제를 받아보세요. 태그 한 번이면 끝.">
+<meta property="og:url" content="https://pleasetap.me">
+<meta property="og:site_name" content="PleaseTapMe">
+<meta property="og:locale" content="ko_KR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PleaseTapMe ⚡">
+<meta name="twitter:description" content="NFC 키링으로 Bitcoin Lightning 결제를 받아보세요. 태그 한 번이면 끝.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -606,19 +620,19 @@ body::before {
 
 <div class="container">
   <!-- Setup view -->
-  <div id="setup-view" class="hidden">
+  <div id="setup-view" class="hidden" role="main" aria-label="NFC 키링 설정">
     <div class="card">
-      <a href="#" class="back-link" onclick="location.hash='';location.reload();return false;">&larr; Home</a>
-      <div class="brand">
-        <div class="brand-icon">&#9889;</div>
+      <a href="#" class="back-link" onclick="location.hash='';location.reload();return false;" aria-label="홈으로 돌아가기">&larr; Home</a>
+      <div class="brand" role="banner">
+        <div class="brand-icon" aria-hidden="true">&#9889;</div>
         <h1>Please<em>Tap</em>Me</h1>
       </div>
       <p class="setup-title">NFC KEYRING SETUP</p>
       <p class="setup-desc">Lightning Address를 입력하면 NFC 태그에 기록할 URL이 생성됩니다.</p>
 
       <div class="input-group">
-        <label>Lightning Address</label>
-        <input type="text" id="setup-input" placeholder="yourname@walletofsatoshi.com" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <label for="setup-input">Lightning Address</label>
+        <input type="email" id="setup-input" placeholder="yourname@walletofsatoshi.com" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="setup-result" inputmode="email">
       </div>
 
       <div class="result-box" id="setup-result">
@@ -649,9 +663,9 @@ body::before {
   </div>
 
   <!-- Landing (no address) -->
-  <div id="error-view" class="error-container hidden">
-    <div class="landing-brand">
-      <div class="brand-icon">&#9889;</div>
+  <div id="error-view" class="error-container hidden" role="main" aria-label="PleaseTapMe 소개">
+    <div class="landing-brand" role="banner">
+      <div class="brand-icon" aria-hidden="true">&#9889;</div>
       <h1>Please<em>Tap</em>Me</h1>
       <p class="tagline">NFC LIGHTNING KEYRING</p>
     </div>
@@ -665,13 +679,13 @@ body::before {
   </div>
 
   <!-- Main payment view -->
-  <div id="main-view" class="hidden">
+  <div id="main-view" class="hidden" role="main" aria-label="Lightning 결제">
     <div class="card">
       <div style="text-align:center;">
-        <a href="#setup" class="setup-link" onclick="location.hash='setup';location.reload();return false;">Setup My Keyring &rarr;</a>
+        <a href="#setup" class="setup-link" onclick="location.hash='setup';location.reload();return false;" aria-label="키링 설정 페이지로 이동">Setup My Keyring &rarr;</a>
       </div>
-      <div class="brand">
-        <div class="brand-icon">&#9889;</div>
+      <div class="brand" role="banner">
+        <div class="brand-icon" aria-hidden="true">&#9889;</div>
         <h1>Please<em>Tap</em>Me</h1>
         <p class="tagline">Lightning Network Payment</p>
       </div>
@@ -681,10 +695,10 @@ body::before {
       <div class="wallet-section">
         <p class="section-label">SELECT WALLET</p>
         <div class="wallet-grid">
-          <button class="wallet-btn wos" onclick="openWallet('wos')">Wallet of Satoshi</button>
-          <button class="wallet-btn phoenix" onclick="openWallet('phoenix')">Phoenix</button>
-          <button class="wallet-btn blink" onclick="openWallet('blink')">Blink</button>
-          <button class="wallet-btn zeus" onclick="openWallet('zeus')">Zeus</button>
+          <button class="wallet-btn wos" onclick="openWallet('wos')" aria-label="Wallet of Satoshi로 결제">Wallet of Satoshi</button>
+          <button class="wallet-btn phoenix" onclick="openWallet('phoenix')" aria-label="Phoenix 지갑으로 결제">Phoenix</button>
+          <button class="wallet-btn blink" onclick="openWallet('blink')" aria-label="Blink 지갑으로 결제">Blink</button>
+          <button class="wallet-btn zeus" onclick="openWallet('zeus')" aria-label="Zeus 지갑으로 결제">Zeus</button>
         </div>
       </div>
       <p class="status" id="pay-status"></p>
@@ -787,6 +801,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   if (!lnAddress || lnAddress.indexOf('@') === -1) {
     document.getElementById('error-view').classList.remove('hidden');
     document.getElementById('footer').classList.add('hidden');
+    // Show format error if #ln= was provided but invalid
+    if (hash && hash.indexOf('#ln=') === 0 && hash.length > 4) {
+      var errNote = document.querySelector('.landing-note');
+      if (errNote) errNote.textContent = '\u26a0 \uc8fc\uc18c \ud615\uc2dd\uc774 \uc62c\ubc14\ub974\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4. user@domain.com \ud615\uc2dd\uc73c\ub85c \uc785\ub825\ud574\uc8fc\uc138\uc694.';
+    }
     return;
   }
 
