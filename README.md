@@ -1,5 +1,7 @@
 # PleaseTapMe
 
+![PleaseTapMe](docs/images/main_screenshot.png)
+
 NFC 키링으로 Bitcoin Lightning 결제를 받을 수 있는 웹 런처.
 
 **NFC 태그 → 웹페이지 → 지갑 실행 → 결제**
