@@ -168,9 +168,10 @@ body::before {
 .wallet-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 12px;
-  font-size: 12px;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 12px 10px;
+  font-size: 11px;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   color: var(--white);
@@ -180,6 +181,7 @@ body::before {
   transition: transform 0.1s;
   -webkit-tap-highlight-color: transparent;
   position: relative;
+  white-space: nowrap;
 }
 
 .wallet-btn:active { transform: translateY(3px); }
@@ -208,12 +210,11 @@ body::before {
 }
 .wallet-btn.zeus:active { box-shadow: 0 1px 0 #b88d06; }
 
-.wallet-btn::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  background: rgba(255,255,255,0.5);
-  border-radius: 2px;
+.wallet-btn img {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
@@ -830,10 +831,10 @@ body::before {
       <div class="wallet-section">
         <p class="section-label" data-i18n="select_wallet">SELECT WALLET</p>
         <div class="wallet-grid">
-          <button class="wallet-btn wos" onclick="openWallet('wos')" aria-label="Wallet of Satoshi로 결제">Wallet of Satoshi</button>
-          <button class="wallet-btn phoenix" onclick="openWallet('phoenix')" aria-label="Phoenix 지갑으로 결제">Phoenix</button>
-          <button class="wallet-btn blink" onclick="openWallet('blink')" aria-label="Blink 지갑으로 결제">Blink</button>
-          <button class="wallet-btn zeus" onclick="openWallet('zeus')" aria-label="Zeus 지갑으로 결제">Zeus</button>
+          <button class="wallet-btn wos" onclick="openWallet('wos')" aria-label="Wallet of Satoshi로 결제"><img src="docs/images/icon/wallteofsatoshi_appicon.png" alt="">Wallet of Satoshi</button>
+          <button class="wallet-btn phoenix" onclick="openWallet('phoenix')" aria-label="Phoenix 지갑으로 결제"><img src="docs/images/icon/phoenix_appicon.png" alt="">Phoenix</button>
+          <button class="wallet-btn blink" onclick="openWallet('blink')" aria-label="Blink 지갑으로 결제"><img src="docs/images/icon/Blink_appicon.png" alt="">Blink</button>
+          <button class="wallet-btn zeus" onclick="openWallet('zeus')" aria-label="Zeus 지갑으로 결제"><img src="docs/images/icon/zeus_appicon.png" alt="">Zeus</button>
         </div>
       </div>
       <p class="status" id="pay-status"></p>

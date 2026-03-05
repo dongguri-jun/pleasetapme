@@ -330,6 +330,66 @@ body::before {
   pointer-events: none;
 }
 
+/* Game Info */
+.game-info-box {
+  text-align: left;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 14px;
+}
+
+.game-info-box h4 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.game-info-box p {
+  font-size: 11px;
+  color: var(--text-dark);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.score-table td {
+  font-size: 11px;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  vertical-align: middle;
+}
+
+.score-table td:first-child {
+  width: 30px;
+  text-align: center;
+}
+
+.score-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+}
+
+.score-table td:last-child.plus { color: #2d9e2d; }
+.score-table td:last-child.minus { color: var(--red); }
+
+.score-table tr:last-child td { border-bottom: none; }
+
+.score-table .item-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+}
+
 /* Buttons */
 .btn-game {
   display: inline-flex;
@@ -420,10 +480,12 @@ body::before {
 
   .game-icon { background: #2d6ad4; }
 
-  .tap-field, .coin-field {
+  .tap-field, .coin-field, .game-info-box {
     background: rgba(255,255,255,0.06);
     border-color: rgba(255,255,255,0.12);
   }
+
+  .score-table td { border-bottom-color: rgba(255,255,255,0.06); }
 
   .btn-quit { color: rgba(255,255,255,0.2); }
   .btn-quit:active { color: rgba(255,255,255,0.35); }
@@ -482,12 +544,27 @@ body::before {
       <span class="game-score" id="lt-score">SCORE: 0</span>
       <span class="game-timer" id="lt-timer">60s</span>
     </div>
-    <div class="tap-field" id="lt-field">
+    <div class="tap-field hidden" id="lt-field">
       <div class="lt-combo hidden" id="lt-combo"></div>
+    </div>
+    <div class="game-info-box" id="lt-info">
+      <h4 data-i18n="g_how">HOW TO PLAY</h4>
+      <p data-i18n="g_lt_how">BTC를 탭하고 알트코인은 피하세요! 연속 탭으로 콤보 배율이 올라갑니다.</p>
+      <h4 data-i18n="g_scores">SCORES</h4>
+      <table class="score-table">
+        <tr><td><img class="item-icon" src="docs/images/icon/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/apileofbtc_icon.png"></td><td>Bonus BTC</td><td class="plus">+5</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/eth_icon.png"></td><td>Ethereum</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/sol_icon.png"></td><td>Solana</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/xrp_icon.png"></td><td>Ripple</td><td class="minus">-3</td></tr>
+      </table>
+      <h4 style="margin-top:10px" data-i18n="g_combo">COMBO</h4>
+      <p style="margin-bottom:0;font-size:10px">5+ → x2 · 10+ → x3 · 15+ → x4 · 20+ → x5</p>
     </div>
     <p class="game-result hidden" id="lt-result"></p>
     <button class="btn-game" id="lt-start" onclick="ltStart()" data-i18n="g_start">START</button>
-    <button class="btn-game btn-back hidden" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game hidden" id="lt-retry" onclick="ltReset()" data-i18n="g_retry">RETRY</button>
+    <button class="btn-game btn-back" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <button class="btn-game btn-quit hidden" id="lt-quit" onclick="ltQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -498,9 +575,21 @@ body::before {
       <span class="game-timer" id="tc-timer">10s</span>
     </div>
     <button class="tap-counter-btn" id="tc-btn" disabled>TAP</button>
+    <div class="game-info-box" id="tc-info">
+      <h4 data-i18n="g_how">HOW TO PLAY</h4>
+      <p data-i18n="g_tc_how">10초 안에 버튼을 최대한 빠르게 탭하세요!</p>
+      <h4 data-i18n="g_rank">RANK</h4>
+      <table class="score-table">
+        <tr><td>🏆</td><td>LEGENDARY</td><td class="plus">80+</td></tr>
+        <tr><td>🥇</td><td>AMAZING</td><td class="plus">60+</td></tr>
+        <tr><td>🥈</td><td>GREAT</td><td class="plus">40+</td></tr>
+        <tr><td>🥉</td><td>NICE TRY</td><td class="plus">0+</td></tr>
+      </table>
+    </div>
     <p class="game-result hidden" id="tc-result"></p>
     <button class="btn-game" id="tc-start" onclick="tcStart()" data-i18n="g_start">START</button>
-    <button class="btn-game btn-back hidden" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game hidden" id="tc-retry" onclick="tcReset()" data-i18n="g_retry">RETRY</button>
+    <button class="btn-game btn-back" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <button class="btn-game btn-quit hidden" id="tc-quit" onclick="tcQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -510,10 +599,27 @@ body::before {
       <span class="game-score" id="cc-score">BTC: 0</span>
       <span class="game-timer" id="cc-timer">60s</span>
     </div>
-    <div class="coin-field" id="cc-field"></div>
+    <div class="coin-field hidden" id="cc-field"></div>
+    <div class="game-info-box" id="cc-info">
+      <h4 data-i18n="g_how">HOW TO PLAY</h4>
+      <p data-i18n="g_cc_how">BTC를 탭해서 모으고, Fiat/알트코인은 피하세요!</p>
+      <h4 data-i18n="g_scores">SCORES</h4>
+      <table class="score-table">
+        <tr><td><img class="item-icon" src="docs/images/icon/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/nkycbtc_icon.png"></td><td>noKYC BTC</td><td class="plus">+5</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/miningbtc_icon.png"></td><td>Mined BTC</td><td class="plus">+10</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/dollar_icon.png"></td><td>Dollar</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/gold_icon.png"></td><td>Gold</td><td class="minus">-1</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/stock_icon.png"></td><td>Stock</td><td class="minus">-1</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/eth_icon.png"></td><td>Ethereum</td><td class="minus">-10</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/tether_icon.png"></td><td>Tether</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="docs/images/icon/realestate_icon.png"></td><td>Real Estate</td><td class="minus">-1</td></tr>
+      </table>
+    </div>
     <p class="game-result hidden" id="cc-result"></p>
     <button class="btn-game" id="cc-start" onclick="ccStart()" data-i18n="g_start">START</button>
-    <button class="btn-game btn-back hidden" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game hidden" id="cc-retry" onclick="ccReset()" data-i18n="g_retry">RETRY</button>
+    <button class="btn-game btn-back" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <button class="btn-game btn-quit hidden" id="cc-quit" onclick="ccQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -560,7 +666,14 @@ var gTranslations = {
     g_whale: 'WHALE!',
     g_hodler: 'HODLER!',
     g_stacker: 'STACKER!',
-    g_quit: 'QUIT'
+    g_quit: 'QUIT',
+    g_how: 'HOW TO PLAY',
+    g_scores: 'SCORES',
+    g_rank: 'RANK',
+    g_combo: 'COMBO',
+    g_lt_how: 'BTC\ub97c \ud0ed\ud558\uace0 \uc54c\ud2b8\ucf54\uc778\uc740 \ud53c\ud558\uc138\uc694! \uc5f0\uc18d \ud0ed\uc73c\ub85c \ucf64\ubcf4 \ubc30\uc728\uc774 \uc62c\ub77c\uac11\ub2c8\ub2e4.',
+    g_tc_how: '10\ucd08 \uc548\uc5d0 \ubc84\ud2bc\uc744 \ucd5c\ub300\ud55c \ube60\ub974\uac8c \ud0ed\ud558\uc138\uc694!',
+    g_cc_how: 'BTC\ub97c \ud0ed\ud574\uc11c \ubaa8\uc73c\uace0, Fiat/\uc54c\ud2b8\ucf54\uc778\uc740 \ud53c\ud558\uc138\uc694!'
   },
   en: {
     back_home: '\u2190 Home',
@@ -582,7 +695,14 @@ var gTranslations = {
     g_whale: 'WHALE!',
     g_hodler: 'HODLER!',
     g_stacker: 'STACKER!',
-    g_quit: 'QUIT'
+    g_quit: 'QUIT',
+    g_how: 'HOW TO PLAY',
+    g_scores: 'SCORES',
+    g_rank: 'RANK',
+    g_combo: 'COMBO',
+    g_lt_how: 'Tap BTC and avoid altcoins! Chain taps to build combo multipliers.',
+    g_tc_how: 'Tap the button as fast as you can in 10 seconds!',
+    g_cc_how: 'Tap BTC to collect, avoid Fiat and altcoins!'
   },
   ja: {
     back_home: '\u2190 Home',
@@ -604,7 +724,14 @@ var gTranslations = {
     g_whale: 'WHALE!',
     g_hodler: 'HODLER!',
     g_stacker: 'STACKER!',
-    g_quit: 'QUIT'
+    g_quit: 'QUIT',
+    g_how: '\u904a\u3073\u65b9',
+    g_scores: '\u30b9\u30b3\u30a2',
+    g_rank: '\u30e9\u30f3\u30af',
+    g_combo: '\u30b3\u30f3\u30dc',
+    g_lt_how: 'BTC\u3092\u30bf\u30c3\u30d7\u3057\u3066\u30a2\u30eb\u30c8\u30b3\u30a4\u30f3\u3092\u907f\u3051\u3088\u3046\uff01\u9023\u7d9a\u30bf\u30c3\u30d7\u3067\u30b3\u30f3\u30dc\u500d\u7387UP\uff01',
+    g_tc_how: '10\u79d2\u4ee5\u5185\u306b\u3067\u304d\u308b\u3060\u3051\u901f\u304f\u30bf\u30c3\u30d7\uff01',
+    g_cc_how: 'BTC\u3092\u30bf\u30c3\u30d7\u3057\u3066\u96c6\u3081\u3001Fiat/\u30a2\u30eb\u30c8\u30b3\u30a4\u30f3\u3092\u907f\u3051\u3088\u3046\uff01'
   }
 };
 
@@ -654,6 +781,8 @@ function ltStart() {
   ltShrinkSize = 36;
   document.getElementById('lt-score').textContent = 'SCORE: 0';
   document.getElementById('lt-timer').textContent = '60s';
+  document.getElementById('lt-info').classList.add('hidden');
+  document.getElementById('lt-field').classList.remove('hidden');
   document.getElementById('lt-result').classList.add('hidden');
   document.getElementById('lt-back').classList.add('hidden');
   document.getElementById('lt-start').classList.add('hidden');
@@ -853,14 +982,24 @@ function ltEnd() {
   var comboEl = document.getElementById('lt-combo');
   document.getElementById('lt-field').innerHTML = '';
   document.getElementById('lt-field').appendChild(comboEl);
+  document.getElementById('lt-field').classList.add('hidden');
   comboEl.classList.add('hidden');
   var resultText = 'SCORE: ' + ltScore + '\u26a1\nMAX COMBO: ' + ltMaxCombo;
   document.getElementById('lt-result').textContent = resultText;
   document.getElementById('lt-result').classList.remove('hidden');
-  document.getElementById('lt-start').classList.remove('hidden');
-  document.getElementById('lt-start').textContent = gt('g_retry');
+  document.getElementById('lt-start').classList.add('hidden');
+  document.getElementById('lt-retry').classList.remove('hidden');
   document.getElementById('lt-back').classList.remove('hidden');
   document.getElementById('lt-quit').classList.add('hidden');
+}
+
+function ltReset() {
+  document.getElementById('lt-result').classList.add('hidden');
+  document.getElementById('lt-retry').classList.add('hidden');
+  document.getElementById('lt-info').classList.remove('hidden');
+  document.getElementById('lt-start').classList.remove('hidden');
+  document.getElementById('lt-score').textContent = 'SCORE: 0';
+  document.getElementById('lt-timer').textContent = '60s';
 }
 
 function ltQuit() {
@@ -878,6 +1017,7 @@ function tcStart() {
   tcTimer = 10;
   document.getElementById('tc-score').textContent = 'TAPS: 0';
   document.getElementById('tc-timer').textContent = '10s';
+  document.getElementById('tc-info').classList.add('hidden');
   document.getElementById('tc-result').classList.add('hidden');
   document.getElementById('tc-back').classList.add('hidden');
   document.getElementById('tc-start').classList.add('hidden');
@@ -917,10 +1057,20 @@ function tcEnd() {
   document.getElementById('tc-btn').textContent = 'TAP';
   document.getElementById('tc-result').textContent = tcCount + ' TAPS!\n' + (tcCount >= 80 ? gt('g_legendary') : tcCount >= 60 ? gt('g_amazing') : tcCount >= 40 ? gt('g_great') : gt('g_nice'));
   document.getElementById('tc-result').classList.remove('hidden');
-  document.getElementById('tc-start').classList.remove('hidden');
-  document.getElementById('tc-start').textContent = gt('g_retry');
+  document.getElementById('tc-start').classList.add('hidden');
+  document.getElementById('tc-retry').classList.remove('hidden');
   document.getElementById('tc-back').classList.remove('hidden');
   document.getElementById('tc-quit').classList.add('hidden');
+}
+
+function tcReset() {
+  document.getElementById('tc-result').classList.add('hidden');
+  document.getElementById('tc-retry').classList.add('hidden');
+  document.getElementById('tc-info').classList.remove('hidden');
+  document.getElementById('tc-start').classList.remove('hidden');
+  document.getElementById('tc-score').textContent = 'TAPS: 0';
+  document.getElementById('tc-timer').textContent = '10s';
+  document.getElementById('tc-btn').textContent = 'TAP';
 }
 
 function tcQuit() {
@@ -965,6 +1115,8 @@ function ccStart() {
   ccActiveCoins = [];
   document.getElementById('cc-score').textContent = 'BTC: 0';
   document.getElementById('cc-timer').textContent = '60s';
+  document.getElementById('cc-info').classList.add('hidden');
+  document.getElementById('cc-field').classList.remove('hidden');
   document.getElementById('cc-result').classList.add('hidden');
   document.getElementById('cc-back').classList.add('hidden');
   document.getElementById('cc-start').classList.add('hidden');
@@ -1047,13 +1199,23 @@ function ccEnd() {
   if (ccAnimFrame) cancelAnimationFrame(ccAnimFrame);
   ccActiveCoins = [];
   document.getElementById('cc-field').innerHTML = '';
+  document.getElementById('cc-field').classList.add('hidden');
   var rank = ccScore >= 50 ? gt('g_whale') : ccScore >= 30 ? gt('g_hodler') : ccScore >= 10 ? gt('g_stacker') : gt('g_nice');
   document.getElementById('cc-result').textContent = ccScore + ' BTC!\n' + rank;
   document.getElementById('cc-result').classList.remove('hidden');
-  document.getElementById('cc-start').classList.remove('hidden');
-  document.getElementById('cc-start').textContent = gt('g_retry');
+  document.getElementById('cc-start').classList.add('hidden');
+  document.getElementById('cc-retry').classList.remove('hidden');
   document.getElementById('cc-back').classList.remove('hidden');
   document.getElementById('cc-quit').classList.add('hidden');
+}
+
+function ccReset() {
+  document.getElementById('cc-result').classList.add('hidden');
+  document.getElementById('cc-retry').classList.add('hidden');
+  document.getElementById('cc-info').classList.remove('hidden');
+  document.getElementById('cc-start').classList.remove('hidden');
+  document.getElementById('cc-score').textContent = 'BTC: 0';
+  document.getElementById('cc-timer').textContent = '60s';
 }
 
 function ccQuit() {
