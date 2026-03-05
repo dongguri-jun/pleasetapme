@@ -1,3 +1,4 @@
+<!-- © 2026 PleaseTapMe. All rights reserved. -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -519,6 +520,39 @@ body::before {
 
 .footer a:hover { color: rgba(255,255,255,0.8); }
 
+/* ── Language Bar ── */
+.lang-bar {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 10;
+}
+
+.lang-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-btn:active { transform: translateY(1px); }
+
+.lang-btn.active {
+  background: var(--white);
+  color: var(--text-dark);
+  border-color: var(--white);
+  font-weight: 700;
+}
+
 .hidden { display: none !important; }
 
 /* ── Dark Mode ── */
@@ -610,6 +644,17 @@ body::before {
   .landing-desc { color: rgba(255,255,255,0.8); }
   .landing-note { color: rgba(255,255,255,0.4); }
 
+  .lang-btn {
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6);
+  }
+  .lang-btn.active {
+    background: var(--white);
+    color: var(--text-dark);
+    border-color: var(--white);
+  }
+
   body::before {
     background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
   }
@@ -618,29 +663,35 @@ body::before {
 </head>
 <body>
 
+<div class="lang-bar">
+  <button class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">한국어</button>
+  <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+  <button class="lang-btn" data-lang="ja" onclick="setLanguage('ja')">日本語</button>
+</div>
+
 <div class="container">
   <!-- Setup view -->
   <div id="setup-view" class="hidden" role="main" aria-label="NFC 키링 설정">
     <div class="card">
-      <a href="#" class="back-link" onclick="location.hash='';location.reload();return false;" aria-label="홈으로 돌아가기">&larr; Home</a>
+      <a href="#" class="back-link" data-i18n="back_home" onclick="location.hash='';location.reload();return false;" aria-label="홈으로 돌아가기">&larr; Home</a>
       <div class="brand" role="banner">
         <div class="brand-icon" aria-hidden="true">&#9889;</div>
         <h1>Please<em>Tap</em>Me</h1>
       </div>
-      <p class="setup-title">NFC KEYRING SETUP</p>
-      <p class="setup-desc">Lightning Address를 입력하면 NFC 태그에 기록할 URL이 생성됩니다.</p>
+      <p class="setup-title" data-i18n="setup_title">NFC KEYRING SETUP</p>
+      <p class="setup-desc" data-i18n="setup_desc">Lightning Address를 입력하면 NFC 태그에 기록할 URL이 생성됩니다.</p>
 
       <div class="input-group">
         <label for="setup-input">Lightning Address</label>
-        <input type="email" id="setup-input" placeholder="yourname@walletofsatoshi.com" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="setup-result" inputmode="email">
+        <input type="email" id="setup-input" data-i18n-placeholder="setup_placeholder" placeholder="yourname@walletofsatoshi.com" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="setup-result" inputmode="email">
       </div>
 
       <div class="result-box" id="setup-result">
-        <span class="result-placeholder">위에 주소를 입력하세요</span>
+        <span class="result-placeholder" data-i18n="setup_result_default">위에 주소를 입력하세요</span>
       </div>
 
       <div class="setup-actions">
-        <button class="btn btn-primary" id="setup-copy-btn" onclick="copySetupURL()" style="opacity:0.5;pointer-events:none;">
+        <button class="btn btn-primary" id="setup-copy-btn" data-i18n="setup_copy" onclick="copySetupURL()" style="opacity:0.5;pointer-events:none;">
           Copy NFC URL
         </button>
         <button class="btn" id="setup-test-btn" onclick="testSetupURL()" style="opacity:0.5;pointer-events:none;">
@@ -649,14 +700,14 @@ body::before {
       </div>
 
       <div class="steps-card">
-        <h3>NFC 태그 기록 방법</h3>
+        <h3 data-i18n="setup_steps_title">NFC 태그 기록 방법</h3>
         <ol class="steps-list">
-          <li><span class="step-num">1</span><span><strong>NFC Tools</strong> 앱 설치 (무료)</span></li>
-          <li><span class="step-num">2</span><span><strong>Write</strong> 탭 선택</span></li>
-          <li><span class="step-num">3</span><span><strong>Add a record</strong> &rarr; URL/URI</span></li>
-          <li><span class="step-num">4</span><span>위에서 복사한 URL 붙여넣기</span></li>
-          <li><span class="step-num">5</span><span>NFC 태그에 폰 갖다 대기</span></li>
-          <li><span class="step-num">6</span><span>기록 완료 후 테스트!</span></li>
+          <li><span class="step-num">1</span><span data-i18n="step1" data-i18n-html="1"><strong>NFC Tools</strong> 앱 설치 (무료)</span></li>
+          <li><span class="step-num">2</span><span data-i18n="step2" data-i18n-html="1"><strong>Write</strong> 탭 선택</span></li>
+          <li><span class="step-num">3</span><span data-i18n="step3" data-i18n-html="1"><strong>Add a record</strong> &rarr; URL/URI</span></li>
+          <li><span class="step-num">4</span><span data-i18n="step4">위에서 복사한 URL 붙여넣기</span></li>
+          <li><span class="step-num">5</span><span data-i18n="step5">NFC 태그에 폰 갖다 대기</span></li>
+          <li><span class="step-num">6</span><span data-i18n="step6">기록 완료 후 테스트!</span></li>
         </ol>
       </div>
     </div>
@@ -669,31 +720,31 @@ body::before {
       <h1>Please<em>Tap</em>Me</h1>
       <p class="tagline">NFC LIGHTNING KEYRING</p>
     </div>
-    <p class="landing-desc">
+    <p class="landing-desc" data-i18n="landing_desc" data-i18n-html="1">
       NFC 키링으로<br>Lightning 결제를 받아보세요.
     </p>
-    <button class="btn btn-cta" onclick="location.hash='setup';location.reload();">
+    <button class="btn btn-cta" data-i18n="landing_btn" onclick="location.hash='setup';location.reload();">
       TAP TO SETUP &#9889;
     </button>
-    <p class="landing-note">이미 키링이 있나요? NFC를 태깅하세요.</p>
+    <p class="landing-note" data-i18n="landing_note">이미 키링이 있나요? NFC를 태깅하세요.</p>
   </div>
 
   <!-- Main payment view -->
   <div id="main-view" class="hidden" role="main" aria-label="Lightning 결제">
     <div class="card">
       <div style="text-align:center;">
-        <a href="#setup" class="setup-link" onclick="location.hash='setup';location.reload();return false;" aria-label="키링 설정 페이지로 이동">Setup My Keyring &rarr;</a>
+        <a href="#setup" class="setup-link" data-i18n="setup_link" onclick="location.hash='setup';location.reload();return false;" aria-label="키링 설정 페이지로 이동">Setup My Keyring &rarr;</a>
       </div>
       <div class="brand" role="banner">
         <div class="brand-icon" aria-hidden="true">&#9889;</div>
         <h1>Please<em>Tap</em>Me</h1>
-        <p class="tagline">Lightning Network Payment</p>
+        <p class="tagline" data-i18n="pay_subtitle">Lightning Network Payment</p>
       </div>
 
       <div class="address-box" id="address-display"></div>
 
       <div class="wallet-section">
-        <p class="section-label">SELECT WALLET</p>
+        <p class="section-label" data-i18n="select_wallet">SELECT WALLET</p>
         <div class="wallet-grid">
           <button class="wallet-btn wos" onclick="openWallet('wos')" aria-label="Wallet of Satoshi로 결제">Wallet of Satoshi</button>
           <button class="wallet-btn phoenix" onclick="openWallet('phoenix')" aria-label="Phoenix 지갑으로 결제">Phoenix</button>
@@ -703,14 +754,14 @@ body::before {
       </div>
       <p class="status" id="pay-status"></p>
 
-      <div class="divider">or scan</div>
+      <div class="divider" data-i18n="or_scan">or scan</div>
 
       <div style="text-align:center;">
         <div id="qr-canvas"></div>
       </div>
       <br>
 
-      <button class="btn" id="copy-btn" onclick="copyAddress()">
+      <button class="btn" id="copy-btn" data-i18n="copy_address" onclick="copyAddress()">
         Copy Address
       </button>
     </div>
@@ -718,12 +769,147 @@ body::before {
 
   <div class="footer" id="footer">
     <a href="#setup" id="footer-link" onclick="location.hash='setup';location.reload();">pleasetap.me</a>
+    <p style="color:rgba(255,255,255,0.3);font-size:9px;margin-top:8px;">&copy; 2026 PleaseTapMe. All rights reserved.</p>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 
 <script>
+// ── i18n ──
+var translations = {
+  ko: {
+    back_home: '\u2190 Home',
+    setup_title: 'NFC KEYRING SETUP',
+    setup_desc: 'Lightning Address\ub97c \uc785\ub825\ud558\uba74 NFC \ud0dc\uadf8\uc5d0 \uae30\ub85d\ud560 URL\uc774 \uc0dd\uc131\ub429\ub2c8\ub2e4.',
+    setup_placeholder: 'yourname@walletofsatoshi.com',
+    setup_result_default: '\uc704\uc5d0 \uc8fc\uc18c\ub97c \uc785\ub825\ud558\uc138\uc694',
+    setup_copy: 'Copy NFC URL',
+    setup_steps_title: 'NFC \ud0dc\uadf8 \uae30\ub85d \ubc29\ubc95',
+    step1: '<strong>NFC Tools</strong> \uc571 \uc124\uce58 (\ubb34\ub8cc)',
+    step2: '<strong>Write</strong> \ud0ed \uc120\ud0dd',
+    step3: '<strong>Add a record</strong> \u2192 URL/URI',
+    step4: '\uc704\uc5d0\uc11c \ubcf5\uc0ac\ud55c URL \ubd99\uc5ec\ub123\uae30',
+    step5: 'NFC \ud0dc\uadf8\uc5d0 \ud3f0 \uac16\ub2e4 \ub300\uae30',
+    step6: '\uae30\ub85d \uc644\ub8cc \ud6c4 \ud14c\uc2a4\ud2b8!',
+    landing_desc: 'NFC \ud0a4\ub9c1\uc73c\ub85c<br>Lightning \uacb0\uc81c\ub97c \ubc1b\uc544\ubcf4\uc138\uc694.',
+    landing_btn: 'TAP TO SETUP \u26a1',
+    landing_note: '\uc774\ubbf8 \ud0a4\ub9c1\uc774 \uc788\ub098\uc694? NFC\ub97c \ud0dc\uae45\ud558\uc138\uc694.',
+    select_wallet: 'SELECT WALLET',
+    or_scan: 'or scan',
+    copy_address: 'Copy Address',
+    pay_subtitle: 'Lightning Network Payment',
+    setup_link: 'Setup My Keyring \u2192',
+    copied: 'Copied!',
+    opening_wallet: 'Opening wallet...',
+    wallet_opened: 'Wallet opened. Tap again if needed.',
+    invalid_address: '\u26a0 \uc8fc\uc18c \ud615\uc2dd\uc774 \uc62c\ubc14\ub974\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4. user@domain.com \ud615\uc2dd\uc73c\ub85c \uc785\ub825\ud574\uc8fc\uc138\uc694.'
+  },
+  en: {
+    back_home: '\u2190 Home',
+    setup_title: 'NFC KEYRING SETUP',
+    setup_desc: 'Enter your Lightning Address to generate a URL for your NFC tag.',
+    setup_placeholder: 'yourname@walletofsatoshi.com',
+    setup_result_default: 'Enter your address above',
+    setup_copy: 'Copy NFC URL',
+    setup_steps_title: 'How to write NFC tag',
+    step1: '<strong>NFC Tools</strong> app install (free)',
+    step2: 'Select <strong>Write</strong> tab',
+    step3: '<strong>Add a record</strong> \u2192 URL/URI',
+    step4: 'Paste the URL copied above',
+    step5: 'Hold your phone to NFC tag',
+    step6: 'Test after writing!',
+    landing_desc: 'Receive Lightning payments<br>with NFC keyring.',
+    landing_btn: 'TAP TO SETUP \u26a1',
+    landing_note: 'Already have a keyring? Tap your NFC.',
+    select_wallet: 'SELECT WALLET',
+    or_scan: 'or scan',
+    copy_address: 'Copy Address',
+    pay_subtitle: 'Lightning Network Payment',
+    setup_link: 'Setup My Keyring \u2192',
+    copied: 'Copied!',
+    opening_wallet: 'Opening wallet...',
+    wallet_opened: 'Wallet opened. Tap again if needed.',
+    invalid_address: '\u26a0 Invalid address format. Please use user@domain.com format.'
+  },
+  ja: {
+    back_home: '\u2190 Home',
+    setup_title: 'NFC KEYRING SETUP',
+    setup_desc: 'Lightning Address\u3092\u5165\u529b\u3059\u308b\u3068NFC\u30bf\u30b0\u306b\u8a18\u9332\u3059\u308bURL\u304c\u751f\u6210\u3055\u308c\u307e\u3059\u3002',
+    setup_placeholder: 'yourname@walletofsatoshi.com',
+    setup_result_default: '\u4e0a\u306b\u30a2\u30c9\u30ec\u30b9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044',
+    setup_copy: 'Copy NFC URL',
+    setup_steps_title: 'NFC\u30bf\u30b0\u306e\u66f8\u304d\u8fbc\u307f\u65b9\u6cd5',
+    step1: '<strong>NFC Tools</strong> \u30a2\u30d7\u30ea\u3092\u30a4\u30f3\u30b9\u30c8\u30fc\u30eb\uff08\u7121\u6599\uff09',
+    step2: '<strong>Write</strong> \u30bf\u30d6\u3092\u9078\u629e',
+    step3: '<strong>Add a record</strong> \u2192 URL/URI',
+    step4: '\u4e0a\u3067\u30b3\u30d4\u30fc\u3057\u305fURL\u3092\u8cbc\u308a\u4ed8\u3051',
+    step5: 'NFC\u30bf\u30b0\u306b\u30b9\u30de\u30db\u3092\u304b\u3056\u3059',
+    step6: '\u66f8\u304d\u8fbc\u307f\u5b8c\u4e86\u5f8c\u30c6\u30b9\u30c8\uff01',
+    landing_desc: 'NFC\u30ad\u30fc\u30ea\u30f3\u30b0\u3067<br>Lightning\u6c7a\u6e08\u3092\u53d7\u3051\u53d6\u308a\u307e\u3057\u3087\u3046\u3002',
+    landing_btn: 'TAP TO SETUP \u26a1',
+    landing_note: '\u3059\u3067\u306b\u30ad\u30fc\u30ea\u30f3\u30b0\u3092\u304a\u6301\u3061\u3067\u3059\u304b\uff1fNFC\u3092\u30bf\u30c3\u30d7\u3057\u3066\u304f\u3060\u3055\u3044\u3002',
+    select_wallet: 'SELECT WALLET',
+    or_scan: 'or scan',
+    copy_address: 'Copy Address',
+    pay_subtitle: 'Lightning Network Payment',
+    setup_link: 'Setup My Keyring \u2192',
+    copied: '\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f\uff01',
+    opening_wallet: '\u30a6\u30a9\u30ec\u30c3\u30c8\u3092\u8d77\u52d5\u4e2d...',
+    wallet_opened: '\u30a6\u30a9\u30ec\u30c3\u30c8\u304c\u958b\u304d\u307e\u3057\u305f\u3002\u5fc5\u8981\u306b\u5fdc\u3058\u3066\u518d\u30bf\u30c3\u30d7\u3002',
+    invalid_address: '\u26a0 \u30a2\u30c9\u30ec\u30b9\u5f62\u5f0f\u304c\u6b63\u3057\u304f\u3042\u308a\u307e\u305b\u3093\u3002user@domain.com\u5f62\u5f0f\u3067\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044\u3002'
+  }
+};
+
+var currentLang = localStorage.getItem('ptm_lang') || 'ko';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('ptm_lang', lang);
+
+  // Update active button
+  var btns = document.querySelectorAll('.lang-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-lang') === lang);
+  }
+
+  // Update html lang attribute
+  document.documentElement.lang = lang === 'ja' ? 'ja' : lang === 'en' ? 'en' : 'ko';
+
+  // Translate data-i18n elements
+  var dict = translations[lang] || translations.ko;
+  var els = document.querySelectorAll('[data-i18n]');
+  for (var j = 0; j < els.length; j++) {
+    var key = els[j].getAttribute('data-i18n');
+    if (dict[key] !== undefined) {
+      if (els[j].hasAttribute('data-i18n-html')) {
+        els[j].innerHTML = dict[key];
+      } else {
+        els[j].textContent = dict[key];
+      }
+    }
+  }
+
+  // Translate placeholders
+  var placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+  for (var k = 0; k < placeholders.length; k++) {
+    var pKey = placeholders[k].getAttribute('data-i18n-placeholder');
+    if (dict[pKey] !== undefined) {
+      placeholders[k].placeholder = dict[pKey];
+    }
+  }
+}
+
+function t(key) {
+  var dict = translations[currentLang] || translations.ko;
+  return dict[key] || key;
+}
+
+// Apply saved language on load
+document.addEventListener('DOMContentLoaded', function() {
+  setLanguage(currentLang);
+});
+
 (function() {
   // Route: #setup or #ln=address
   var hash = window.location.hash;
@@ -757,7 +943,7 @@ body::before {
         testBtn.style.pointerEvents = 'auto';
       } else {
         generatedURL = '';
-        result.innerHTML = '<span class="result-placeholder">\uc704\uc5d0 \uc8fc\uc18c\ub97c \uc785\ub825\ud558\uc138\uc694</span>';
+        result.innerHTML = '<span class="result-placeholder" data-i18n="setup_result_default">' + t('setup_result_default') + '</span>';
         copyBtn.style.opacity = '0.5';
         copyBtn.style.pointerEvents = 'none';
         testBtn.style.opacity = '0.5';
@@ -770,8 +956,8 @@ body::before {
       var btn = document.getElementById('setup-copy-btn');
       if (navigator.clipboard) {
         navigator.clipboard.writeText(generatedURL).then(function() {
-          btn.textContent = 'Copied!';
-          setTimeout(function() { btn.textContent = 'Copy NFC URL'; }, 2000);
+          btn.textContent = t('copied');
+          setTimeout(function() { btn.textContent = t('setup_copy'); }, 2000);
         });
       } else {
         var ta = document.createElement('textarea');
@@ -780,8 +966,8 @@ body::before {
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        btn.textContent = 'Copied!';
-        setTimeout(function() { btn.textContent = 'Copy NFC URL'; }, 2000);
+        btn.textContent = t('copied');
+        setTimeout(function() { btn.textContent = t('setup_copy'); }, 2000);
       }
     };
 
@@ -801,7 +987,7 @@ body::before {
     // Show format error if #ln= was provided but invalid
     if (hash && hash.indexOf('#ln=') === 0 && hash.length > 4) {
       var errNote = document.querySelector('.landing-note');
-      if (errNote) errNote.textContent = '\u26a0 \uc8fc\uc18c \ud615\uc2dd\uc774 \uc62c\ubc14\ub974\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4. user@domain.com \ud615\uc2dd\uc73c\ub85c \uc785\ub825\ud574\uc8fc\uc138\uc694.';
+      if (errNote) errNote.textContent = t('invalid_address');
     }
     return;
   }
@@ -850,7 +1036,7 @@ body::before {
 
   // Android: auto-redirect with generic lightning: URI
   if (isAndroid) {
-    document.getElementById('pay-status').textContent = 'Opening wallet...';
+    document.getElementById('pay-status').textContent = t('opening_wallet');
     sessionStorage.setItem('ptm_opened', Date.now());
     setTimeout(function() {
       window.location.href = lightningURI;
@@ -869,7 +1055,7 @@ body::before {
 
     sessionStorage.setItem('ptm_opened', Date.now());
     window.location.href = uri;
-    statusEl.textContent = 'Wallet opened. Tap again if needed.';
+    statusEl.textContent = t('wallet_opened');
 
     // Reset after delay so user can tap again
     setTimeout(function() { launching = false; }, 3000);
@@ -880,8 +1066,8 @@ body::before {
     var btn = document.getElementById('copy-btn');
     if (navigator.clipboard) {
       navigator.clipboard.writeText(lnAddress).then(function() {
-        btn.textContent = 'Copied!';
-        setTimeout(function() { btn.textContent = 'Copy Address'; }, 2000);
+        btn.textContent = t('copied');
+        setTimeout(function() { btn.textContent = t('copy_address'); }, 2000);
       });
     } else {
       var ta = document.createElement('textarea');
@@ -890,8 +1076,8 @@ body::before {
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
-      btn.textContent = 'Copied!';
-      setTimeout(function() { btn.textContent = 'Copy Address'; }, 2000);
+      btn.textContent = t('copied');
+      setTimeout(function() { btn.textContent = t('copy_address'); }, 2000);
     }
   };
 })();
