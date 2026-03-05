@@ -545,6 +545,23 @@ body::before {
 
 .lang-bar .game-btn:active { transform: translateY(1px); }
 
+.lang-bar .tip-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border: 2px solid #8B5E3C;
+  border-radius: 20px;
+  background: #8B5E3C;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-bar .tip-btn:active { transform: translateY(1px); }
+
 /* ── Game Link (landing) ── */
 .game-link {
   display: inline-block;
@@ -589,11 +606,20 @@ body::before {
 /* ── Language Bar ── */
 .lang-bar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
   margin-bottom: 16px;
   position: relative;
   z-index: 10;
+}
+
+.lang-bar .tip-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  order: -1;
+  margin-bottom: 4px;
 }
 
 .lang-btn {
@@ -720,6 +746,11 @@ body::before {
     border-color: #c13a4f;
   }
 
+  .lang-bar .tip-btn {
+    background: #6d4a2e;
+    border-color: #6d4a2e;
+  }
+
   .btn-nfc {
     background: #1a9e48;
     box-shadow: 0 4px 0 #137a36;
@@ -748,6 +779,7 @@ body::before {
   <button class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">한국어</button>
   <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
   <button class="lang-btn" data-lang="ja" onclick="setLanguage('ja')">日本語</button>
+  <div class="tip-row"><a href="#ln=dongguri@oksu.su" class="tip-btn" onclick="location.hash='ln=dongguri@oksu.su';location.reload();return false;">☕ Tip a Coffee</a></div>
   <a href="games.html" class="game-btn">Game &#127918;</a>
 </div>
 
