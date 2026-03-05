@@ -983,7 +983,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!lnAddress || lnAddress.indexOf('@') === -1) {
     document.getElementById('error-view').classList.remove('hidden');
-    document.getElementById('footer').classList.add('hidden');
+    document.getElementById('footer-link').classList.add('hidden');
     // Show format error if #ln= was provided but invalid
     if (hash && hash.indexOf('#ln=') === 0 && hash.length > 4) {
       var errNote = document.querySelector('.landing-note');
