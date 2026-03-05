@@ -1,0 +1,12 @@
+{
+  "name": "PleaseTapMe",
+  "short_name": "PleaseTapMe",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#479FF8",
+  "theme_color": "#479FF8",
+  "icons": [
+    { "src": "favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
