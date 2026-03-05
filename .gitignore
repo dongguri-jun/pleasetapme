@@ -2,6 +2,9 @@
 .omc/
 .mcp.json
 
+# Backlog
+backlog/
+
 # Backups
 *.backup
 
