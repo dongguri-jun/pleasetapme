@@ -18,10 +18,6 @@ NFC 키링으로 Bitcoin Lightning 결제를 받을 수 있는 웹 런처.
 - 지갑 독립 — 특정 지갑에 종속되지 않음
 - iOS/Android 지원 — iOS NFC 제약을 웹 런처로 해결
 
-## NFC 키링 설정
-
-NFC 키링에 Lightning Address를 기록하는 방법은 [NFC 설정 가이드](docs/NFC_GUIDE.md)를 참고하세요.
-
 ## 지원 지갑
 
 - [Wallet of Satoshi](https://www.walletofsatoshi.com/)
@@ -30,56 +26,81 @@ NFC 키링에 Lightning Address를 기록하는 방법은 [NFC 설정 가이드]
 - [Zeus](https://zeusln.com/)
 - 기타 `lightning:` URI를 지원하는 모든 지갑
 
-## 지갑 개발자를 위한 연동 가이드
+지갑 개발자라면 [연동 가이드](docs/WALLET_INTEGRATION.md)를 참고하세요.
 
-PleaseTapMe에 지갑 전용 버튼을 추가하려면, 앱에서 커스텀 URL 스킴을 지원해야 합니다.
+---
 
-### 필요한 작업
+## NFC 키링 설정 가이드
 
-**1. 커스텀 URL 스킴 등록**
+### 준비물
 
-Android (`AndroidManifest.xml`):
-```xml
-<activity android:name=".MainActivity">
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="yourwallet" />
-    </intent-filter>
-</activity>
+- NFC 키링 (NTAG213 칩)
+- 스마트폰 (NFC 지원)
+- **NFC Tools** 앱 ([Android](https://play.google.com/store/apps/details?id=com.wakdev.wdnfc) / [iOS](https://apps.apple.com/app/nfc-tools/id1252962749))
+- 자신의 Lightning Address (예: `myname@walletofsatoshi.com`)
+
+> Lightning Address가 없다면? [Wallet of Satoshi](https://www.walletofsatoshi.com/), [Phoenix](https://phoenix.acinq.co/), [Blink](https://www.blink.sv/) 등의 지갑 앱에서 무료로 만들 수 있습니다.
+
+### 1단계: 기록할 URL 준비
+
+아래 형식으로 URL을 만드세요. `내주소@도메인` 부분을 자신의 Lightning Address로 바꿔주세요.
+
+```
+https://dongguri-jun.github.io/pleasetapme/#ln=내주소@도메인
 ```
 
-iOS (`Info.plist`):
-```xml
-<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>yourwallet</string>
-        </array>
-    </dict>
-</array>
+**예시:**
+```
+https://dongguri-jun.github.io/pleasetapme/#ln=dongguri@walletofsatoshi.com
 ```
 
-**2. `lightning:` 범용 스킴 지원 (권장)**
+> 또는 웹사이트의 [Setup 페이지](https://dongguri-jun.github.io/pleasetapme/#setup)에서 자동으로 URL을 생성할 수 있습니다.
 
-위와 동일한 방법으로 `lightning` 스킴도 등록하면, PleaseTapMe뿐 아니라 모든 Lightning 서비스에서 지갑이 호출됩니다.
+### 2단계: NFC 키링에 기록하기
 
-**3. URI 처리**
+**Android**
 
-앱이 `yourwallet:user@domain.com` 형태의 URI를 받으면, Lightning Address로 인식하여 결제 화면을 열어야 합니다.
+1. **NFC Tools** 앱을 열고 **Write** 탭을 선택
+2. **Add a record** → **URL / URI** 선택
+3. 1단계에서 만든 URL을 붙여넣기
+4. **OK** → **Write** → NFC 키링을 스마트폰 뒷면에 대기
+5. **"Write complete"** 메시지가 나오면 성공!
 
-### 연동 요청
+**iOS**
 
-스킴이 준비되면 [Issue](https://github.com/dongguri-jun/pleasetapme/issues)를 열어주세요. 전용 버튼을 추가해드립니다.
+1. **NFC Tools** 앱을 열고 **Write** 탭을 선택
+2. **Add a record** → **URL / URI** 선택
+3. 1단계에서 만든 URL을 붙여넣기
+4. **OK** → **Write** → NFC 키링을 iPhone 상단에 대기
+5. **"Write complete"** 메시지가 나오면 성공!
 
-필요한 정보:
-- 지갑 이름
-- URL 스킴 (예: `yourwallet:`)
-- 앱스토어 링크 (iOS / Android)
-- 지갑 로고 (선택)
+> iPhone의 NFC 안테나는 상단(카메라 근처)에 있습니다.
+
+### 3단계: 테스트하기
+
+기록이 완료되면 반드시 테스트하세요!
+
+- **Android**: 키링을 스마트폰 뒷면에 대기 → 브라우저 → 지갑 실행 확인
+- **iOS**: 키링을 iPhone 상단에 대기 → 알림 탭 → Safari → 지갑 버튼 클릭
+
+### 4단계: 하드웨어 락 (선택, 권장)
+
+테스트 완료 후 NFC 태그를 **쓰기 방지** 설정하는 것을 권장합니다.
+
+1. NFC Tools 앱에서 **Other** → **Lock Tag** 선택
+2. NFC 키링을 대면 완료
+
+> **주의: 하드웨어 락은 되돌릴 수 없습니다.** 한번 락을 걸면 영구적으로 내용을 변경할 수 없습니다. 반드시 테스트를 완료한 후에 락을 거세요.
+
+### 문제 해결
+
+| 증상 | 해결 |
+|------|------|
+| NFC 기록이 안 됨 | NFC 기능 켜져 있는지 확인. 키링을 더 가까이 대기 |
+| 태깅은 되는데 지갑이 안 열림 | Lightning 지갑 앱 설치 확인. QR 코드 스캔 또는 주소 복사로 시도 |
+| URL을 잘못 기록함 | 락 전이면 다시 기록. 락 후면 새 태그 사용 |
+
+---
 
 ## 기술 스택
 
