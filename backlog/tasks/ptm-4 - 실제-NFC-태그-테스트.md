@@ -4,10 +4,10 @@ title: 실제 NFC 태그 테스트
 status: To Do
 assignee: []
 created_date: '2026-03-04 12:51'
-updated_date: '2026-03-04 12:51'
+updated_date: '2026-03-05 02:16'
 labels: []
 dependencies:
-  - PTM-2
+  - PTM-1
 priority: high
 ---
 
