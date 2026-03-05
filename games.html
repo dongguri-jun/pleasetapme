@@ -1,0 +1,1066 @@
+<!-- © 2026 PleaseTapMe. All rights reserved. -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#479FF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a2a3a" media="(prefers-color-scheme: dark)">
+<title>PleaseTapMe - Mini Games</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sky: #479FF8;
+  --sky-dark: #2D5A87;
+  --white: #FFFFFF;
+  --red: #E14D63;
+  --red-shadow: #a02e3f;
+  --text-dark: #1A1A1A;
+  --text-mid: #2D5A87;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--sky);
+  color: var(--text-dark);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px 24px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.1), 0 12px 24px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.brand { margin-bottom: 20px; }
+.brand-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.brand h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+.brand h1 em { font-style: normal; color: var(--red); }
+
+.page-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--text-mid);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* ── Game List ── */
+.game-list { display: flex; flex-direction: column; gap: 10px; }
+
+.game-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-card:active { transform: translateY(2px); }
+
+.game-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sky);
+  border-radius: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.game-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.game-info h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.game-info p {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.4;
+}
+
+.game-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: var(--white);
+  background: var(--red);
+  padding: 3px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.game-tag.soon {
+  background: #b0c8e8;
+}
+
+/* ── Game Area ── */
+.game-area {
+  display: none;
+  text-align: center;
+}
+
+.game-area.active { display: block; }
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.game-score {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--text-dark);
+}
+
+.game-timer {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--red);
+}
+
+/* Lightning Tap */
+.tap-field {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  touch-action: manipulation;
+}
+
+.lightning-target {
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  animation: zap 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  padding: 10px;
+  margin: -10px;
+}
+
+.lightning-target img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@keyframes zap {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lightning-target.bonus {
+  filter: drop-shadow(0 0 8px #FFD700);
+}
+
+.lt-combo {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #FFD700;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  animation: comboPop 0.3s ease-out;
+  z-index: 2;
+}
+
+@keyframes comboPop {
+  from { transform: translateX(-50%) scale(1.5); }
+  to { transform: translateX(-50%) scale(1); }
+}
+
+.lt-points {
+  position: absolute;
+  font-size: 12px;
+  font-family: 'Press Start 2P', monospace;
+  color: #FFD700;
+  pointer-events: none;
+  animation: missFloat 0.6s ease-out forwards;
+}
+
+.tap-miss {
+  position: absolute;
+  font-size: 14px;
+  color: var(--red);
+  font-family: 'Press Start 2P', monospace;
+  pointer-events: none;
+  animation: missFloat 0.6s ease-out forwards;
+}
+
+@keyframes missFloat {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-30px); }
+}
+
+/* Tap Counter */
+.tap-counter-btn {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--red);
+  border: none;
+  box-shadow: 0 6px 0 var(--red-shadow);
+  color: var(--white);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 36px;
+  cursor: pointer;
+  transition: transform 0.05s;
+  -webkit-tap-highlight-color: transparent;
+  margin: 20px auto;
+  display: block;
+}
+
+.tap-counter-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--red-shadow);
+}
+
+/* Coin Catcher */
+.coin-field {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #f0f6ff;
+  border: 2px solid #d0e2f5;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  touch-action: manipulation;
+}
+
+.coin {
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 8px;
+  margin: -8px;
+}
+
+.coin img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Buttons */
+.btn-game {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 24px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--white);
+  background: var(--red);
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--red-shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-game:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--red-shadow);
+}
+
+.btn-back {
+  background: var(--sky);
+  box-shadow: 0 4px 0 var(--sky-dark);
+  margin-top: 10px;
+}
+
+.btn-back:active {
+  box-shadow: 0 1px 0 var(--sky-dark);
+}
+
+.game-result {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: var(--text-dark);
+  margin: 16px 0;
+  line-height: 2;
+}
+
+.btn-quit {
+  background: transparent;
+  box-shadow: none;
+  color: rgba(0,0,0,0.25);
+  font-size: 8px;
+  padding: 10px 16px;
+  margin-top: 16px;
+}
+.btn-quit:active {
+  box-shadow: none;
+  color: rgba(0,0,0,0.4);
+}
+
+.hidden { display: none !important; }
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.footer a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 10px;
+  font-family: 'Press Start 2P', monospace;
+}
+
+/* ── Dark Mode ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky: #1a2a3a;
+    --sky-dark: #8ab4e0;
+    --white: #1e2a36;
+    --text-dark: #e8eef4;
+    --text-mid: #8ab4e0;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .game-card {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .game-icon { background: #2d6ad4; }
+
+  .tap-field, .coin-field {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .btn-quit { color: rgba(255,255,255,0.2); }
+  .btn-quit:active { color: rgba(255,255,255,0.35); }
+
+  body::before {
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Game Menu -->
+  <div id="game-menu" class="card">
+    <a href="index.html" class="back-link" data-i18n="back_home">&larr; Home</a>
+    <div class="brand">
+      <div class="brand-icon">&#127918;</div>
+      <h1>Please<em>Tap</em>Me</h1>
+    </div>
+    <p class="page-title" data-i18n="g_title">Mini Games</p>
+
+    <div class="game-list">
+      <a class="game-card" onclick="startGame('lightning-tap')">
+        <div class="game-icon"><img src="docs/images/icon/clickclick_icon.png" alt="ClickClick"></div>
+        <div class="game-info">
+          <h3 data-i18n="g_lt_name">ClickClick</h3>
+          <p data-i18n="g_lt_desc">번개를 빠르게 탭하세요!</p>
+          <span class="game-tag">PLAY</span>
+        </div>
+      </a>
+
+      <a class="game-card" onclick="startGame('tap-counter')">
+        <div class="game-icon"><img src="docs/images/icon/tapcounter_icon.png" alt="Tap Counter"></div>
+        <div class="game-info">
+          <h3 data-i18n="g_tc_name">Tap Counter</h3>
+          <p data-i18n="g_tc_desc">10초 안에 최대한 많이 탭!</p>
+          <span class="game-tag">PLAY</span>
+        </div>
+      </a>
+
+      <a class="game-card" onclick="startGame('coin-catcher')">
+        <div class="game-icon"><img src="docs/images/icon/dodgethefiat_icon.png" alt="Dodge the Fiat"></div>
+        <div class="game-info">
+          <h3 data-i18n="g_cc_name">Dodge the Fiat</h3>
+          <p data-i18n="g_cc_desc">Fiat를 피해서 BTC만 모으세요!</p>
+          <span class="game-tag">PLAY</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Lightning Tap Game -->
+  <div id="lightning-tap" class="card game-area">
+    <div class="game-header">
+      <span class="game-score" id="lt-score">SCORE: 0</span>
+      <span class="game-timer" id="lt-timer">60s</span>
+    </div>
+    <div class="tap-field" id="lt-field">
+      <div class="lt-combo hidden" id="lt-combo"></div>
+    </div>
+    <p class="game-result hidden" id="lt-result"></p>
+    <button class="btn-game" id="lt-start" onclick="ltStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back hidden" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game btn-quit hidden" id="lt-quit" onclick="ltQuit()" data-i18n="g_quit">QUIT</button>
+  </div>
+
+  <!-- Tap Counter Game -->
+  <div id="tap-counter" class="card game-area">
+    <div class="game-header">
+      <span class="game-score" id="tc-score">TAPS: 0</span>
+      <span class="game-timer" id="tc-timer">10s</span>
+    </div>
+    <button class="tap-counter-btn" id="tc-btn" disabled>TAP</button>
+    <p class="game-result hidden" id="tc-result"></p>
+    <button class="btn-game" id="tc-start" onclick="tcStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back hidden" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game btn-quit hidden" id="tc-quit" onclick="tcQuit()" data-i18n="g_quit">QUIT</button>
+  </div>
+
+  <!-- Coin Catcher Game -->
+  <div id="coin-catcher" class="card game-area">
+    <div class="game-header">
+      <span class="game-score" id="cc-score">BTC: 0</span>
+      <span class="game-timer" id="cc-timer">60s</span>
+    </div>
+    <div class="coin-field" id="cc-field"></div>
+    <p class="game-result hidden" id="cc-result"></p>
+    <button class="btn-game" id="cc-start" onclick="ccStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back hidden" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <button class="btn-game btn-quit hidden" id="cc-quit" onclick="ccQuit()" data-i18n="g_quit">QUIT</button>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">pleasetap.me</a>
+    <p style="color:rgba(255,255,255,0.3);font-size:9px;margin-top:8px;">&copy; 2026 PleaseTapMe. All rights reserved.</p>
+  </div>
+</div>
+
+<script>
+// ── Touch helper: use touchstart for instant response, fallback to mousedown ──
+function onTap(el, fn) {
+  var handled = false;
+  el.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    handled = true;
+    fn(e);
+  }, { passive: false });
+  el.addEventListener('mousedown', function(e) {
+    if (!handled) fn(e);
+    handled = false;
+  });
+}
+
+// ── i18n ──
+var gTranslations = {
+  ko: {
+    back_home: '\u2190 Home',
+    g_title: 'Mini Games',
+    g_lt_name: '\ud074\ub9ad\ud074\ub9ad',
+    g_lt_desc: '\ucf64\ubcf4\ub97c \uc313\uc544 BTC\ub97c \ud0ed\ud558\uc138\uc694!',
+    g_tc_name: '\ud0ed \uce74\uc6b4\ud130',
+    g_tc_desc: '10\ucd08 \uc548\uc5d0 \ucd5c\ub300\ud55c \ub9ce\uc774 \ud0ed!',
+    g_cc_name: '\ud53c\uc544\ud2b8 \ud53c\ud558\uae30',
+    g_cc_desc: 'Fiat\ub97c \ud53c\ud574\uc11c BTC\ub9cc \ubaa8\uc73c\uc138\uc694!',
+    g_start: 'START',
+    g_retry: 'RETRY',
+    g_menu: 'MENU',
+    g_miss: 'MISS',
+    g_legendary: 'LEGENDARY!',
+    g_amazing: 'AMAZING!',
+    g_great: 'GREAT!',
+    g_nice: 'NICE TRY!',
+    g_whale: 'WHALE!',
+    g_hodler: 'HODLER!',
+    g_stacker: 'STACKER!',
+    g_quit: 'QUIT'
+  },
+  en: {
+    back_home: '\u2190 Home',
+    g_title: 'Mini Games',
+    g_lt_name: 'ClickClick',
+    g_lt_desc: 'Build combos, tap the BTC!',
+    g_tc_name: 'Tap Counter',
+    g_tc_desc: 'Tap as many times in 10 seconds!',
+    g_cc_name: 'Dodge the Fiat',
+    g_cc_desc: 'Dodge fiat, stack only BTC!',
+    g_start: 'START',
+    g_retry: 'RETRY',
+    g_menu: 'MENU',
+    g_miss: 'MISS',
+    g_legendary: 'LEGENDARY!',
+    g_amazing: 'AMAZING!',
+    g_great: 'GREAT!',
+    g_nice: 'NICE TRY!',
+    g_whale: 'WHALE!',
+    g_hodler: 'HODLER!',
+    g_stacker: 'STACKER!',
+    g_quit: 'QUIT'
+  },
+  ja: {
+    back_home: '\u2190 Home',
+    g_title: '\u30df\u30cb\u30b2\u30fc\u30e0',
+    g_lt_name: '\u30af\u30ea\u30c3\u30af\u30af\u30ea\u30c3\u30af',
+    g_lt_desc: '\u30b3\u30f3\u30dc\u3092\u7a4d\u3093\u3067BTC\u3092\u30bf\u30c3\u30d7\uff01',
+    g_tc_name: '\u30bf\u30c3\u30d7\u30ab\u30a6\u30f3\u30bf\u30fc',
+    g_tc_desc: '10\u79d2\u3067\u3067\u304d\u308b\u3060\u3051\u591a\u304f\u30bf\u30c3\u30d7\uff01',
+    g_cc_name: '\u30d5\u30a3\u30a2\u30c3\u30c8\u3092\u907f\u3051\u308d',
+    g_cc_desc: 'Fiat\u3092\u907f\u3051\u3066BTC\u3060\u3051\u96c6\u3081\u3088\u3046\uff01',
+    g_start: 'START',
+    g_retry: 'RETRY',
+    g_menu: 'MENU',
+    g_miss: 'MISS',
+    g_legendary: 'LEGENDARY!',
+    g_amazing: 'AMAZING!',
+    g_great: 'GREAT!',
+    g_nice: 'NICE TRY!',
+    g_whale: 'WHALE!',
+    g_hodler: 'HODLER!',
+    g_stacker: 'STACKER!',
+    g_quit: 'QUIT'
+  }
+};
+
+var currentLang = localStorage.getItem('ptm_lang') || 'ko';
+
+function gt(key) {
+  var dict = gTranslations[currentLang] || gTranslations.ko;
+  return dict[key] || key;
+}
+
+function applyLang() {
+  document.documentElement.lang = currentLang === 'ja' ? 'ja' : currentLang === 'en' ? 'en' : 'ko';
+  var dict = gTranslations[currentLang] || gTranslations.ko;
+  var els = document.querySelectorAll('[data-i18n]');
+  for (var i = 0; i < els.length; i++) {
+    var key = els[i].getAttribute('data-i18n');
+    if (dict[key] !== undefined) els[i].textContent = dict[key];
+  }
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+
+// ── Navigation ──
+function startGame(id) {
+  document.getElementById('game-menu').style.display = 'none';
+  document.getElementById(id).classList.add('active');
+}
+
+function backToMenu() {
+  var games = document.querySelectorAll('.game-area');
+  for (var i = 0; i < games.length; i++) games[i].classList.remove('active');
+  document.getElementById('game-menu').style.display = '';
+}
+
+// ══════════════════════════════
+// Lightning Tap
+// ══════════════════════════════
+var ltScore, ltTimer, ltInterval, ltSpawnTimeout;
+var ltCombo, ltMaxCombo, ltSpawnDelay, ltShrinkSize;
+
+function ltStart() {
+  ltScore = 0;
+  ltTimer = 60;
+  ltCombo = 0;
+  ltMaxCombo = 0;
+  ltSpawnDelay = 900;
+  ltShrinkSize = 36;
+  document.getElementById('lt-score').textContent = 'SCORE: 0';
+  document.getElementById('lt-timer').textContent = '60s';
+  document.getElementById('lt-result').classList.add('hidden');
+  document.getElementById('lt-back').classList.add('hidden');
+  document.getElementById('lt-start').classList.add('hidden');
+  document.getElementById('lt-quit').classList.remove('hidden');
+  // Preserve combo element
+  var comboEl = document.getElementById('lt-combo');
+  document.getElementById('lt-field').innerHTML = '';
+  document.getElementById('lt-field').appendChild(comboEl);
+  comboEl.classList.add('hidden');
+
+  ltInterval = setInterval(function() {
+    ltTimer--;
+    document.getElementById('lt-timer').textContent = ltTimer + 's';
+    // Ramp up difficulty over 60 seconds
+    if (ltTimer === 45) { ltSpawnDelay = 800; ltShrinkSize = 34; }
+    if (ltTimer === 30) { ltSpawnDelay = 650; ltShrinkSize = 30; }
+    if (ltTimer === 15) { ltSpawnDelay = 500; ltShrinkSize = 26; }
+    if (ltTimer <= 0) ltEnd();
+  }, 1000);
+
+  ltScheduleSpawn();
+}
+
+function ltScheduleSpawn() {
+  if (ltTimer <= 0) return;
+  ltSpawnTimeout = setTimeout(function() {
+    ltSpawn();
+    ltScheduleSpawn();
+  }, ltSpawnDelay);
+}
+
+function ltGetMultiplier() {
+  if (ltCombo >= 20) return 5;
+  if (ltCombo >= 15) return 4;
+  if (ltCombo >= 10) return 3;
+  if (ltCombo >= 5)  return 2;
+  return 1;
+}
+
+function ltUpdateCombo() {
+  var comboEl = document.getElementById('lt-combo');
+  if (ltCombo >= 5) {
+    var mult = ltGetMultiplier();
+    comboEl.textContent = ltCombo + ' COMBO x' + mult;
+    comboEl.classList.remove('hidden');
+    // Re-trigger animation
+    comboEl.style.animation = 'none';
+    comboEl.offsetHeight;
+    comboEl.style.animation = '';
+  } else if (ltCombo > 0) {
+    comboEl.textContent = ltCombo + ' COMBO';
+    comboEl.classList.remove('hidden');
+    comboEl.style.animation = 'none';
+    comboEl.offsetHeight;
+    comboEl.style.animation = '';
+  } else {
+    comboEl.classList.add('hidden');
+  }
+}
+
+// Image path helper
+var ICON_PATH = 'docs/images/icon/';
+function iconImg(file, size) {
+  var s = size || 36;
+  return '<img src="' + ICON_PATH + file + '" width="' + s + '" height="' + s + '" alt="">';
+}
+
+// Shitcoin traps
+var ltTraps = [
+  { img: 'eth_icon.png', label: 'ETH' },
+  { img: 'sol_icon.png', label: 'SOL' },
+  { img: 'xrp_icon.png', label: 'XRP' }
+];
+
+function ltSpawnOne(isTrap) {
+  var field = document.getElementById('lt-field');
+  var el = document.createElement('div');
+  el.className = 'lightning-target';
+
+  if (isTrap) {
+    var trap = ltTraps[Math.floor(Math.random() * ltTraps.length)];
+    el.innerHTML = iconImg(trap.img, ltShrinkSize);
+    el.style.opacity = '0.85';
+  } else {
+    var isBonus = ltTimer <= 50 && Math.random() < 0.1;
+    el.innerHTML = iconImg(isBonus ? 'apileofbtc_icon.png' : 'btc_icon.png', ltShrinkSize);
+    if (isBonus) el.classList.add('bonus');
+    el.dataset.points = isBonus ? '5' : '1';
+  }
+
+  el.style.left = Math.random() * (field.offsetWidth - 50) + 'px';
+  el.style.top = Math.random() * (field.offsetHeight - 50) + 'px';
+
+  if (isTrap) {
+    onTap(el, function(e) {
+      e.stopPropagation();
+      // Penalty: lose points and reset combo
+      ltScore = Math.max(0, ltScore - 3);
+      ltCombo = 0;
+      document.getElementById('lt-score').textContent = 'SCORE: ' + ltScore;
+      ltUpdateCombo();
+      var fb = document.createElement('div');
+      fb.className = 'tap-miss';
+      fb.textContent = '-3';
+      fb.style.left = el.style.left;
+      fb.style.top = el.style.top;
+      field.appendChild(fb);
+      setTimeout(function() { fb.remove(); }, 600);
+      el.remove();
+    });
+  } else {
+    var basePoints = parseInt(el.dataset.points);
+    onTap(el, function(e) {
+      e.stopPropagation();
+      ltCombo++;
+      if (ltCombo > ltMaxCombo) ltMaxCombo = ltCombo;
+      var mult = ltGetMultiplier();
+      var points = basePoints * mult;
+      ltScore += points;
+      document.getElementById('lt-score').textContent = 'SCORE: ' + ltScore;
+      ltUpdateCombo();
+      var fb = document.createElement('div');
+      fb.className = 'lt-points';
+      fb.textContent = '+' + points;
+      fb.style.left = el.style.left;
+      fb.style.top = el.style.top;
+      field.appendChild(fb);
+      setTimeout(function() { fb.remove(); }, 600);
+      el.remove();
+    });
+  }
+
+  field.appendChild(el);
+
+  // Auto-remove after a while (missed target)
+  var lifespan = 1500 + Math.random() * 1000;
+  setTimeout(function() {
+    if (el.parentNode && !isTrap) {
+      // Missed a BTC = reset combo
+      ltCombo = 0;
+      ltUpdateCombo();
+    }
+    if (el.parentNode) el.remove();
+  }, lifespan);
+}
+
+function ltSpawn() {
+  // Spawn 2-4 items at once, mix of BTC and traps
+  var elapsed = 60 - ltTimer;
+  var maxItems = elapsed >= 45 ? 4 : elapsed >= 30 ? 3 : 3;
+  var count = 2 + Math.floor(Math.random() * (maxItems - 1));
+
+  // Always at least one BTC
+  ltSpawnOne(false);
+
+  // Additional items: 40% chance each is a trap
+  for (var i = 1; i < count; i++) {
+    ltSpawnOne(Math.random() < 0.4);
+  }
+}
+
+// Setup miss handler with touch support
+(function() {
+  var field = document.getElementById('lt-field');
+  function handleMiss(e) {
+    if (ltTimer <= 0 || !ltInterval) return;
+    // Reset combo on miss tap
+    ltCombo = 0;
+    ltUpdateCombo();
+    var rect = field.getBoundingClientRect();
+    var cx, cy;
+    if (e.touches && e.touches.length) {
+      cx = e.touches[0].clientX; cy = e.touches[0].clientY;
+    } else {
+      cx = e.clientX; cy = e.clientY;
+    }
+    var miss = document.createElement('div');
+    miss.className = 'tap-miss';
+    miss.textContent = gt('g_miss');
+    miss.style.left = (cx - rect.left - 20) + 'px';
+    miss.style.top = (cy - rect.top - 10) + 'px';
+    field.appendChild(miss);
+    setTimeout(function() { miss.remove(); }, 600);
+  }
+  field.addEventListener('touchstart', function(e) {
+    if (e.target === field || e.target.id === 'lt-combo') handleMiss(e);
+  }, { passive: true });
+  field.addEventListener('mousedown', function(e) {
+    if (e.target === field || e.target.id === 'lt-combo') handleMiss(e);
+  });
+})();
+
+function ltEnd() {
+  clearInterval(ltInterval);
+  clearTimeout(ltSpawnTimeout);
+  ltInterval = null;
+  var comboEl = document.getElementById('lt-combo');
+  document.getElementById('lt-field').innerHTML = '';
+  document.getElementById('lt-field').appendChild(comboEl);
+  comboEl.classList.add('hidden');
+  var resultText = 'SCORE: ' + ltScore + '\u26a1\nMAX COMBO: ' + ltMaxCombo;
+  document.getElementById('lt-result').textContent = resultText;
+  document.getElementById('lt-result').classList.remove('hidden');
+  document.getElementById('lt-start').classList.remove('hidden');
+  document.getElementById('lt-start').textContent = gt('g_retry');
+  document.getElementById('lt-back').classList.remove('hidden');
+  document.getElementById('lt-quit').classList.add('hidden');
+}
+
+function ltQuit() {
+  ltEnd();
+  backToMenu();
+}
+
+// ══════════════════════════════
+// Tap Counter
+// ══════════════════════════════
+var tcCount, tcTimer, tcInterval;
+
+function tcStart() {
+  tcCount = 0;
+  tcTimer = 10;
+  document.getElementById('tc-score').textContent = 'TAPS: 0';
+  document.getElementById('tc-timer').textContent = '10s';
+  document.getElementById('tc-result').classList.add('hidden');
+  document.getElementById('tc-back').classList.add('hidden');
+  document.getElementById('tc-start').classList.add('hidden');
+  document.getElementById('tc-quit').classList.remove('hidden');
+  document.getElementById('tc-btn').disabled = false;
+  document.getElementById('tc-btn').textContent = 'TAP';
+
+  tcInterval = setInterval(function() {
+    tcTimer--;
+    document.getElementById('tc-timer').textContent = tcTimer + 's';
+    if (tcTimer <= 0) tcEnd();
+  }, 1000);
+}
+
+function tcTap() {
+  if (tcTimer <= 0) return;
+  tcCount++;
+  document.getElementById('tc-score').textContent = 'TAPS: ' + tcCount;
+  document.getElementById('tc-btn').textContent = tcCount;
+}
+
+// Setup tap counter with instant touch
+(function() {
+  var btn = document.getElementById('tc-btn');
+  btn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    if (!btn.disabled) tcTap();
+  }, { passive: false });
+  btn.addEventListener('mousedown', function() {
+    if (!btn.disabled) tcTap();
+  });
+})();
+
+function tcEnd() {
+  clearInterval(tcInterval);
+  document.getElementById('tc-btn').disabled = true;
+  document.getElementById('tc-btn').textContent = 'TAP';
+  document.getElementById('tc-result').textContent = tcCount + ' TAPS!\n' + (tcCount >= 80 ? gt('g_legendary') : tcCount >= 60 ? gt('g_amazing') : tcCount >= 40 ? gt('g_great') : gt('g_nice'));
+  document.getElementById('tc-result').classList.remove('hidden');
+  document.getElementById('tc-start').classList.remove('hidden');
+  document.getElementById('tc-start').textContent = gt('g_retry');
+  document.getElementById('tc-back').classList.remove('hidden');
+  document.getElementById('tc-quit').classList.add('hidden');
+}
+
+function tcQuit() {
+  tcEnd();
+  backToMenu();
+}
+
+// ══════════════════════════════
+// Only BTC (was Coin Catcher)
+// ══════════════════════════════
+var ccScore, ccTimer, ccInterval, ccSpawnInterval;
+
+// Item definitions: img, points, weight (spawn chance), isBTC
+var ccItems = [
+  { img: 'btc_icon.png', points: 1, weight: 40, isBTC: true, label: 'BTC' },
+  { img: 'nkycbtc_icon.png', points: 5, weight: 8, isBTC: true, label: 'noKYC' },
+  { img: 'miningbtc_icon.png', points: 10, weight: 4, isBTC: true, label: 'Mined' },
+  { img: 'dollar_icon.png', points: -3, weight: 15, isBTC: false, label: 'Dollar' },
+  { img: 'gold_icon.png', points: -1, weight: 10, isBTC: false, label: 'Gold' },
+  { img: 'stock_icon.png', points: -1, weight: 10, isBTC: false, label: 'Stock' },
+  { img: 'eth_icon.png', points: -10, weight: 5, isBTC: false, label: 'ETH' },
+  { img: 'tether_icon.png', points: -3, weight: 5, isBTC: false, label: 'Tether' },
+  { img: 'realestate_icon.png', points: -1, weight: 8, isBTC: false, label: 'Estate' }
+];
+
+var ccTotalWeight = 0;
+for (var i = 0; i < ccItems.length; i++) ccTotalWeight += ccItems[i].weight;
+
+function ccPickItem() {
+  var r = Math.random() * ccTotalWeight;
+  var sum = 0;
+  for (var i = 0; i < ccItems.length; i++) {
+    sum += ccItems[i].weight;
+    if (r <= sum) return ccItems[i];
+  }
+  return ccItems[0];
+}
+
+function ccStart() {
+  ccScore = 0;
+  ccTimer = 60;
+  ccActiveCoins = [];
+  document.getElementById('cc-score').textContent = 'BTC: 0';
+  document.getElementById('cc-timer').textContent = '60s';
+  document.getElementById('cc-result').classList.add('hidden');
+  document.getElementById('cc-back').classList.add('hidden');
+  document.getElementById('cc-start').classList.add('hidden');
+  document.getElementById('cc-quit').classList.remove('hidden');
+  document.getElementById('cc-field').innerHTML = '';
+
+  ccInterval = setInterval(function() {
+    ccTimer--;
+    document.getElementById('cc-timer').textContent = ccTimer + 's';
+    if (ccTimer <= 0) ccEnd();
+  }, 1000);
+
+  ccSpawnInterval = setInterval(ccSpawn, 500);
+  ccAnimFrame = requestAnimationFrame(ccAnimate);
+}
+
+// Active coins tracked for JS-driven animation
+var ccActiveCoins = [];
+var ccAnimFrame = null;
+
+function ccAnimate() {
+  if (ccTimer <= 0) return;
+  var now = Date.now();
+  for (var i = ccActiveCoins.length - 1; i >= 0; i--) {
+    var c = ccActiveCoins[i];
+    var elapsed = now - c.startTime;
+    var progress = elapsed / c.duration;
+    if (progress >= 1) {
+      if (c.el.parentNode) c.el.remove();
+      ccActiveCoins.splice(i, 1);
+    } else {
+      c.el.style.top = (-40 + progress * 350) + 'px';
+    }
+  }
+  ccAnimFrame = requestAnimationFrame(ccAnimate);
+}
+
+function ccSpawn() {
+  var field = document.getElementById('cc-field');
+  var item = ccPickItem();
+  var coin = document.createElement('div');
+  coin.className = 'coin';
+  coin.innerHTML = iconImg(item.img);
+  var x = Math.random() * (field.offsetWidth - 40);
+  coin.style.left = x + 'px';
+  coin.style.top = '-40px';
+
+  var duration = 2000 + Math.random() * 1500;
+  var coinData = { el: coin, startTime: Date.now(), duration: duration };
+  ccActiveCoins.push(coinData);
+
+  function showFeedback(pts) {
+    var fb = document.createElement('div');
+    fb.className = 'tap-miss';
+    fb.style.color = pts > 0 ? '#2d9e2d' : 'var(--red)';
+    fb.textContent = (pts > 0 ? '+' : '') + pts;
+    fb.style.left = coin.style.left;
+    fb.style.top = coin.style.top;
+    field.appendChild(fb);
+    setTimeout(function() { fb.remove(); }, 600);
+  }
+
+  onTap(coin, function(e) {
+    e.stopPropagation();
+    ccScore += item.points;
+    document.getElementById('cc-score').textContent = 'BTC: ' + ccScore;
+    showFeedback(item.points);
+    // Remove from active list
+    var idx = ccActiveCoins.indexOf(coinData);
+    if (idx !== -1) ccActiveCoins.splice(idx, 1);
+    coin.remove();
+  });
+
+  field.appendChild(coin);
+}
+
+function ccEnd() {
+  clearInterval(ccInterval);
+  clearInterval(ccSpawnInterval);
+  if (ccAnimFrame) cancelAnimationFrame(ccAnimFrame);
+  ccActiveCoins = [];
+  document.getElementById('cc-field').innerHTML = '';
+  var rank = ccScore >= 50 ? gt('g_whale') : ccScore >= 30 ? gt('g_hodler') : ccScore >= 10 ? gt('g_stacker') : gt('g_nice');
+  document.getElementById('cc-result').textContent = ccScore + ' BTC!\n' + rank;
+  document.getElementById('cc-result').classList.remove('hidden');
+  document.getElementById('cc-start').classList.remove('hidden');
+  document.getElementById('cc-start').textContent = gt('g_retry');
+  document.getElementById('cc-back').classList.remove('hidden');
+  document.getElementById('cc-quit').classList.add('hidden');
+}
+
+function ccQuit() {
+  ccEnd();
+  backToMenu();
+}
+</script>
+
+</body>
+</html>
