@@ -390,6 +390,35 @@ body::before {
   vertical-align: middle;
 }
 
+.game-end-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.game-end-btns .btn-game {
+  flex: 1;
+  padding: 14px 0;
+  margin-top: 0 !important;
+  font-size: 9px;
+  box-shadow: 0 4px 0 var(--red-shadow);
+}
+
+.game-end-btns .btn-back {
+  box-shadow: 0 4px 0 var(--sky-dark);
+}
+
+.game-end-btns .btn-share {
+  box-shadow: 0 4px 0 #333;
+}
+
+.btn-share {
+  background: #000 !important;
+  box-shadow: 0 4px 0 #333 !important;
+  white-space: nowrap;
+}
+.btn-share:active { box-shadow: 0 1px 0 #333 !important; }
+
 /* Buttons */
 .btn-game {
   display: inline-flex;
@@ -563,8 +592,11 @@ body::before {
     </div>
     <p class="game-result hidden" id="lt-result"></p>
     <button class="btn-game" id="lt-start" onclick="ltStart()" data-i18n="g_start">START</button>
-    <button class="btn-game hidden" id="lt-retry" onclick="ltReset()" data-i18n="g_retry">RETRY</button>
-    <button class="btn-game btn-back" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <div class="game-end-btns hidden" id="lt-end-btns">
+      <button class="btn-game" id="lt-retry" onclick="ltReset()" data-i18n="g_retry">RETRY</button>
+      <button class="btn-game btn-back" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+      <button class="btn-game btn-share" id="lt-share" onclick="ltShare()">Share 𝕏</button>
+    </div>
     <button class="btn-game btn-quit hidden" id="lt-quit" onclick="ltQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -588,8 +620,11 @@ body::before {
     </div>
     <p class="game-result hidden" id="tc-result"></p>
     <button class="btn-game" id="tc-start" onclick="tcStart()" data-i18n="g_start">START</button>
-    <button class="btn-game hidden" id="tc-retry" onclick="tcReset()" data-i18n="g_retry">RETRY</button>
-    <button class="btn-game btn-back" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <div class="game-end-btns hidden" id="tc-end-btns">
+      <button class="btn-game" id="tc-retry" onclick="tcReset()" data-i18n="g_retry">RETRY</button>
+      <button class="btn-game btn-back" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+      <button class="btn-game btn-share" id="tc-share" onclick="tcShare()">Share 𝕏</button>
+    </div>
     <button class="btn-game btn-quit hidden" id="tc-quit" onclick="tcQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -618,8 +653,11 @@ body::before {
     </div>
     <p class="game-result hidden" id="cc-result"></p>
     <button class="btn-game" id="cc-start" onclick="ccStart()" data-i18n="g_start">START</button>
-    <button class="btn-game hidden" id="cc-retry" onclick="ccReset()" data-i18n="g_retry">RETRY</button>
-    <button class="btn-game btn-back" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+    <div class="game-end-btns hidden" id="cc-end-btns">
+      <button class="btn-game" id="cc-retry" onclick="ccReset()" data-i18n="g_retry">RETRY</button>
+      <button class="btn-game btn-back" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
+      <button class="btn-game btn-share" id="cc-share" onclick="ccShare()">Share 𝕏</button>
+    </div>
     <button class="btn-game btn-quit hidden" id="cc-quit" onclick="ccQuit()" data-i18n="g_quit">QUIT</button>
   </div>
 
@@ -642,6 +680,29 @@ function onTap(el, fn) {
     if (!handled) fn(e);
     handled = false;
   });
+}
+
+// ── X (Twitter) Share ──
+function shareOnX(text) {
+  var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+  window.open(url, '_blank');
+}
+
+function ltShare() {
+  var text = '\ud83c\udfae ClickClick\n\u26a1 SCORE: ' + ltScore + '\n\ud83d\udd25 MAX COMBO: ' + ltMaxCombo + '\n\nhttps://pleasetap.me/games.html\n#PleaseTapMe #Bitcoin';
+  shareOnX(text);
+}
+
+function tcShare() {
+  var rank = tcCount >= 80 ? 'LEGENDARY' : tcCount >= 60 ? 'AMAZING' : tcCount >= 40 ? 'GREAT' : 'NICE TRY';
+  var text = '\ud83c\udfae Tap Counter\n\ud83d\udc46 ' + tcCount + ' TAPS!\n\ud83c\udfc6 ' + rank + '!\n\nhttps://pleasetap.me/games.html\n#PleaseTapMe #Bitcoin';
+  shareOnX(text);
+}
+
+function ccShare() {
+  var rank = ccScore >= 50 ? 'WHALE' : ccScore >= 30 ? 'HODLER' : ccScore >= 10 ? 'STACKER' : 'NICE TRY';
+  var text = '\ud83c\udfae Dodge the Fiat\n\u20bf ' + ccScore + ' BTC!\n\ud83c\udfc6 ' + rank + '!\n\nhttps://pleasetap.me/games.html\n#PleaseTapMe #Bitcoin';
+  shareOnX(text);
 }
 
 // ── i18n ──
@@ -784,7 +845,7 @@ function ltStart() {
   document.getElementById('lt-info').classList.add('hidden');
   document.getElementById('lt-field').classList.remove('hidden');
   document.getElementById('lt-result').classList.add('hidden');
-  document.getElementById('lt-back').classList.add('hidden');
+  document.getElementById('lt-end-btns').classList.add('hidden');
   document.getElementById('lt-start').classList.add('hidden');
   document.getElementById('lt-quit').classList.remove('hidden');
   // Preserve combo element
@@ -988,14 +1049,13 @@ function ltEnd() {
   document.getElementById('lt-result').textContent = resultText;
   document.getElementById('lt-result').classList.remove('hidden');
   document.getElementById('lt-start').classList.add('hidden');
-  document.getElementById('lt-retry').classList.remove('hidden');
-  document.getElementById('lt-back').classList.remove('hidden');
+  document.getElementById('lt-end-btns').classList.remove('hidden');
   document.getElementById('lt-quit').classList.add('hidden');
 }
 
 function ltReset() {
   document.getElementById('lt-result').classList.add('hidden');
-  document.getElementById('lt-retry').classList.add('hidden');
+  document.getElementById('lt-end-btns').classList.add('hidden');
   document.getElementById('lt-info').classList.remove('hidden');
   document.getElementById('lt-start').classList.remove('hidden');
   document.getElementById('lt-score').textContent = 'SCORE: 0';
@@ -1019,7 +1079,7 @@ function tcStart() {
   document.getElementById('tc-timer').textContent = '10s';
   document.getElementById('tc-info').classList.add('hidden');
   document.getElementById('tc-result').classList.add('hidden');
-  document.getElementById('tc-back').classList.add('hidden');
+  document.getElementById('tc-end-btns').classList.add('hidden');
   document.getElementById('tc-start').classList.add('hidden');
   document.getElementById('tc-quit').classList.remove('hidden');
   document.getElementById('tc-btn').disabled = false;
@@ -1058,14 +1118,13 @@ function tcEnd() {
   document.getElementById('tc-result').textContent = tcCount + ' TAPS!\n' + (tcCount >= 80 ? gt('g_legendary') : tcCount >= 60 ? gt('g_amazing') : tcCount >= 40 ? gt('g_great') : gt('g_nice'));
   document.getElementById('tc-result').classList.remove('hidden');
   document.getElementById('tc-start').classList.add('hidden');
-  document.getElementById('tc-retry').classList.remove('hidden');
-  document.getElementById('tc-back').classList.remove('hidden');
+  document.getElementById('tc-end-btns').classList.remove('hidden');
   document.getElementById('tc-quit').classList.add('hidden');
 }
 
 function tcReset() {
   document.getElementById('tc-result').classList.add('hidden');
-  document.getElementById('tc-retry').classList.add('hidden');
+  document.getElementById('tc-end-btns').classList.add('hidden');
   document.getElementById('tc-info').classList.remove('hidden');
   document.getElementById('tc-start').classList.remove('hidden');
   document.getElementById('tc-score').textContent = 'TAPS: 0';
@@ -1118,7 +1177,7 @@ function ccStart() {
   document.getElementById('cc-info').classList.add('hidden');
   document.getElementById('cc-field').classList.remove('hidden');
   document.getElementById('cc-result').classList.add('hidden');
-  document.getElementById('cc-back').classList.add('hidden');
+  document.getElementById('cc-end-btns').classList.add('hidden');
   document.getElementById('cc-start').classList.add('hidden');
   document.getElementById('cc-quit').classList.remove('hidden');
   document.getElementById('cc-field').innerHTML = '';
@@ -1204,14 +1263,13 @@ function ccEnd() {
   document.getElementById('cc-result').textContent = ccScore + ' BTC!\n' + rank;
   document.getElementById('cc-result').classList.remove('hidden');
   document.getElementById('cc-start').classList.add('hidden');
-  document.getElementById('cc-retry').classList.remove('hidden');
-  document.getElementById('cc-back').classList.remove('hidden');
+  document.getElementById('cc-end-btns').classList.remove('hidden');
   document.getElementById('cc-quit').classList.add('hidden');
 }
 
 function ccReset() {
   document.getElementById('cc-result').classList.add('hidden');
-  document.getElementById('cc-retry').classList.add('hidden');
+  document.getElementById('cc-end-btns').classList.add('hidden');
   document.getElementById('cc-info').classList.remove('hidden');
   document.getElementById('cc-start').classList.remove('hidden');
   document.getElementById('cc-score').textContent = 'BTC: 0';
