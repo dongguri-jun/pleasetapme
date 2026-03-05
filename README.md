@@ -126,13 +126,38 @@ https://pleasetap.me#ln=내주소@도메인
 
 ---
 
+## 미니 게임
+
+결제 페이지에서 **Game** 버튼으로 Bitcoin 테마 미니 게임을 즐길 수 있습니다.
+
+- **Click Click** — 비트코인 클리커
+- **Tap Counter** — 탭 카운터
+- **Dodge the Fiat** — 법정화폐를 피하고 비트코인을 모으는 게임
+
+## 프로젝트 구조
+
+```
+index.html          # 메인 웹 런처 (랜딩/셋업/결제 뷰)
+games.html          # 미니 게임 페이지
+manifest.json       # PWA 매니페스트
+CNAME               # 커스텀 도메인 설정
+assets/
+├── icons/          # favicon + 게임/지갑 아이콘
+└── main_screenshot.png
+docs/
+├── DESIGN_GUIDE.md # UI 디자인 가이드
+├── NFC_GUIDE.md    # NFC 상세 가이드
+├── SPEC.md         # 제품 스펙
+└── WALLET_INTEGRATION.md  # 지갑 연동 가이드
+```
+
 ## 기술 스택
 
 - HTML/CSS/JS (단일 파일, 프레임워크 없음)
 - NFC: NTAG213
 - Lightning: LUD-16 (Lightning Address)
 - Web NFC API (Android Chrome)
-- 호스팅: GitHub Pages + Cloudflare
+- 호스팅: GitHub Pages
 
 ## 라이선스
 
