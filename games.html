@@ -460,6 +460,20 @@ body::before {
   line-height: 2;
 }
 
+.game-best {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #FFD700;
+  margin: 4px 0 8px;
+}
+
+.game-card-best {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #FFD700;
+  margin-top: 4px;
+}
+
 .btn-quit {
   background: transparent;
   box-shadow: none;
@@ -539,29 +553,32 @@ body::before {
 
     <div class="game-list">
       <a class="game-card" onclick="startGame('lightning-tap')">
-        <div class="game-icon"><img src="docs/images/icon/clickclick_icon.png" alt="ClickClick"></div>
+        <div class="game-icon"><img src="assets/icons/clickclick_icon.png" alt="ClickClick"></div>
         <div class="game-info">
           <h3 data-i18n="g_lt_name">ClickClick</h3>
           <p data-i18n="g_lt_desc">번개를 빠르게 탭하세요!</p>
           <span class="game-tag">PLAY</span>
+          <p class="game-card-best" id="lt-card-best"></p>
         </div>
       </a>
 
       <a class="game-card" onclick="startGame('tap-counter')">
-        <div class="game-icon"><img src="docs/images/icon/tapcounter_icon.png" alt="Tap Counter"></div>
+        <div class="game-icon"><img src="assets/icons/tapcounter_icon.png" alt="Tap Counter"></div>
         <div class="game-info">
           <h3 data-i18n="g_tc_name">Tap Counter</h3>
           <p data-i18n="g_tc_desc">10초 안에 최대한 많이 탭!</p>
           <span class="game-tag">PLAY</span>
+          <p class="game-card-best" id="tc-card-best"></p>
         </div>
       </a>
 
       <a class="game-card" onclick="startGame('coin-catcher')">
-        <div class="game-icon"><img src="docs/images/icon/dodgethefiat_icon.png" alt="Dodge the Fiat"></div>
+        <div class="game-icon"><img src="assets/icons/dodgethefiat_icon.png" alt="Dodge the Fiat"></div>
         <div class="game-info">
           <h3 data-i18n="g_cc_name">Dodge the Fiat</h3>
           <p data-i18n="g_cc_desc">Fiat를 피해서 BTC만 모으세요!</p>
           <span class="game-tag">PLAY</span>
+          <p class="game-card-best" id="cc-card-best"></p>
         </div>
       </a>
     </div>
@@ -581,17 +598,19 @@ body::before {
       <p data-i18n="g_lt_how">BTC를 탭하고 알트코인은 피하세요! 연속 탭으로 콤보 배율이 올라갑니다.</p>
       <h4 data-i18n="g_scores">SCORES</h4>
       <table class="score-table">
-        <tr><td><img class="item-icon" src="docs/images/icon/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/apileofbtc_icon.png"></td><td>Bonus BTC</td><td class="plus">+5</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/eth_icon.png"></td><td>Ethereum</td><td class="minus">-3</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/sol_icon.png"></td><td>Solana</td><td class="minus">-3</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/xrp_icon.png"></td><td>Ripple</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/apileofbtc_icon.png"></td><td>Bonus BTC</td><td class="plus">+5</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/eth_icon.png"></td><td>Ethereum</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/sol_icon.png"></td><td>Solana</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/xrp_icon.png"></td><td>Ripple</td><td class="minus">-3</td></tr>
       </table>
       <h4 style="margin-top:10px" data-i18n="g_combo">COMBO</h4>
       <p style="margin-bottom:0;font-size:10px">5+ → x2 · 10+ → x3 · 15+ → x4 · 20+ → x5</p>
     </div>
     <p class="game-result hidden" id="lt-result"></p>
+    <p class="game-best hidden" id="lt-best"></p>
     <button class="btn-game" id="lt-start" onclick="ltStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back" id="lt-menu" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <div class="game-end-btns hidden" id="lt-end-btns">
       <button class="btn-game" id="lt-retry" onclick="ltReset()" data-i18n="g_retry">RETRY</button>
       <button class="btn-game btn-back" id="lt-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
@@ -619,7 +638,9 @@ body::before {
       </table>
     </div>
     <p class="game-result hidden" id="tc-result"></p>
+    <p class="game-best hidden" id="tc-best"></p>
     <button class="btn-game" id="tc-start" onclick="tcStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back" id="tc-menu" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <div class="game-end-btns hidden" id="tc-end-btns">
       <button class="btn-game" id="tc-retry" onclick="tcReset()" data-i18n="g_retry">RETRY</button>
       <button class="btn-game btn-back" id="tc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
@@ -640,19 +661,21 @@ body::before {
       <p data-i18n="g_cc_how">BTC를 탭해서 모으고, Fiat/알트코인은 피하세요!</p>
       <h4 data-i18n="g_scores">SCORES</h4>
       <table class="score-table">
-        <tr><td><img class="item-icon" src="docs/images/icon/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/nkycbtc_icon.png"></td><td>noKYC BTC</td><td class="plus">+5</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/miningbtc_icon.png"></td><td>Mined BTC</td><td class="plus">+10</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/dollar_icon.png"></td><td>Dollar</td><td class="minus">-3</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/gold_icon.png"></td><td>Gold</td><td class="minus">-1</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/stock_icon.png"></td><td>Stock</td><td class="minus">-1</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/eth_icon.png"></td><td>Ethereum</td><td class="minus">-10</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/tether_icon.png"></td><td>Tether</td><td class="minus">-3</td></tr>
-        <tr><td><img class="item-icon" src="docs/images/icon/realestate_icon.png"></td><td>Real Estate</td><td class="minus">-1</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/btc_icon.png"></td><td>BTC</td><td class="plus">+1</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/nkycbtc_icon.png"></td><td>noKYC BTC</td><td class="plus">+5</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/miningbtc_icon.png"></td><td>Mined BTC</td><td class="plus">+10</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/dollar_icon.png"></td><td>Dollar</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/gold_icon.png"></td><td>Gold</td><td class="minus">-1</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/stock_icon.png"></td><td>Stock</td><td class="minus">-1</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/eth_icon.png"></td><td>Ethereum</td><td class="minus">-10</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/tether_icon.png"></td><td>Tether</td><td class="minus">-3</td></tr>
+        <tr><td><img class="item-icon" src="assets/icons/realestate_icon.png"></td><td>Real Estate</td><td class="minus">-1</td></tr>
       </table>
     </div>
     <p class="game-result hidden" id="cc-result"></p>
+    <p class="game-best hidden" id="cc-best"></p>
     <button class="btn-game" id="cc-start" onclick="ccStart()" data-i18n="g_start">START</button>
+    <button class="btn-game btn-back" id="cc-menu" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
     <div class="game-end-btns hidden" id="cc-end-btns">
       <button class="btn-game" id="cc-retry" onclick="ccReset()" data-i18n="g_retry">RETRY</button>
       <button class="btn-game btn-back" id="cc-back" onclick="backToMenu()" data-i18n="g_menu">MENU</button>
@@ -816,6 +839,32 @@ function applyLang() {
 document.addEventListener('DOMContentLoaded', applyLang);
 
 // ── Navigation ──
+function getBest(key) { return parseInt(localStorage.getItem(key)) || 0; }
+function setBest(key, score) { localStorage.setItem(key, score); }
+
+function showBest(elId, best, isNew) {
+  var el = document.getElementById(elId);
+  if (best > 0) {
+    el.textContent = isNew ? 'NEW BEST!' : 'MY BEST: ' + best;
+    el.classList.remove('hidden');
+  }
+}
+
+function updateCardBests() {
+  var cards = [
+    { id: 'lt-card-best', key: 'ptm_lt_best' },
+    { id: 'tc-card-best', key: 'ptm_tc_best' },
+    { id: 'cc-card-best', key: 'ptm_cc_best' }
+  ];
+  for (var i = 0; i < cards.length; i++) {
+    var best = getBest(cards[i].key);
+    var el = document.getElementById(cards[i].id);
+    el.textContent = best > 0 ? 'BEST: ' + best : '';
+  }
+}
+
+updateCardBests();
+
 function startGame(id) {
   document.getElementById('game-menu').style.display = 'none';
   document.getElementById(id).classList.add('active');
@@ -845,8 +894,10 @@ function ltStart() {
   document.getElementById('lt-info').classList.add('hidden');
   document.getElementById('lt-field').classList.remove('hidden');
   document.getElementById('lt-result').classList.add('hidden');
+  document.getElementById('lt-best').classList.add('hidden');
   document.getElementById('lt-end-btns').classList.add('hidden');
   document.getElementById('lt-start').classList.add('hidden');
+  document.getElementById('lt-menu').classList.add('hidden');
   document.getElementById('lt-quit').classList.remove('hidden');
   // Preserve combo element
   var comboEl = document.getElementById('lt-combo');
@@ -905,7 +956,7 @@ function ltUpdateCombo() {
 }
 
 // Image path helper
-var ICON_PATH = 'docs/images/icon/';
+var ICON_PATH = 'assets/icons/';
 function iconImg(file, size) {
   var s = size || 36;
   return '<img src="' + ICON_PATH + file + '" width="' + s + '" height="' + s + '" alt="">';
@@ -1048,16 +1099,24 @@ function ltEnd() {
   var resultText = 'SCORE: ' + ltScore + '\u26a1\nMAX COMBO: ' + ltMaxCombo;
   document.getElementById('lt-result').textContent = resultText;
   document.getElementById('lt-result').classList.remove('hidden');
+  var ltBest = getBest('ptm_lt_best');
+  var isNew = ltScore > ltBest;
+  if (isNew) { setBest('ptm_lt_best', ltScore); ltBest = ltScore; }
+  showBest('lt-best', ltBest, isNew);
+  updateCardBests();
   document.getElementById('lt-start').classList.add('hidden');
+  document.getElementById('lt-menu').classList.add('hidden');
   document.getElementById('lt-end-btns').classList.remove('hidden');
   document.getElementById('lt-quit').classList.add('hidden');
 }
 
 function ltReset() {
   document.getElementById('lt-result').classList.add('hidden');
+  document.getElementById('lt-best').classList.add('hidden');
   document.getElementById('lt-end-btns').classList.add('hidden');
   document.getElementById('lt-info').classList.remove('hidden');
   document.getElementById('lt-start').classList.remove('hidden');
+  document.getElementById('lt-menu').classList.remove('hidden');
   document.getElementById('lt-score').textContent = 'SCORE: 0';
   document.getElementById('lt-timer').textContent = '60s';
 }
@@ -1079,8 +1138,10 @@ function tcStart() {
   document.getElementById('tc-timer').textContent = '10s';
   document.getElementById('tc-info').classList.add('hidden');
   document.getElementById('tc-result').classList.add('hidden');
+  document.getElementById('tc-best').classList.add('hidden');
   document.getElementById('tc-end-btns').classList.add('hidden');
   document.getElementById('tc-start').classList.add('hidden');
+  document.getElementById('tc-menu').classList.add('hidden');
   document.getElementById('tc-quit').classList.remove('hidden');
   document.getElementById('tc-btn').disabled = false;
   document.getElementById('tc-btn').textContent = 'TAP';
@@ -1117,16 +1178,24 @@ function tcEnd() {
   document.getElementById('tc-btn').textContent = 'TAP';
   document.getElementById('tc-result').textContent = tcCount + ' TAPS!\n' + (tcCount >= 80 ? gt('g_legendary') : tcCount >= 60 ? gt('g_amazing') : tcCount >= 40 ? gt('g_great') : gt('g_nice'));
   document.getElementById('tc-result').classList.remove('hidden');
+  var tcBest = getBest('ptm_tc_best');
+  var isNew = tcCount > tcBest;
+  if (isNew) { setBest('ptm_tc_best', tcCount); tcBest = tcCount; }
+  showBest('tc-best', tcBest, isNew);
+  updateCardBests();
   document.getElementById('tc-start').classList.add('hidden');
+  document.getElementById('tc-menu').classList.add('hidden');
   document.getElementById('tc-end-btns').classList.remove('hidden');
   document.getElementById('tc-quit').classList.add('hidden');
 }
 
 function tcReset() {
   document.getElementById('tc-result').classList.add('hidden');
+  document.getElementById('tc-best').classList.add('hidden');
   document.getElementById('tc-end-btns').classList.add('hidden');
   document.getElementById('tc-info').classList.remove('hidden');
   document.getElementById('tc-start').classList.remove('hidden');
+  document.getElementById('tc-menu').classList.remove('hidden');
   document.getElementById('tc-score').textContent = 'TAPS: 0';
   document.getElementById('tc-timer').textContent = '10s';
   document.getElementById('tc-btn').textContent = 'TAP';
@@ -1182,8 +1251,10 @@ function ccStart() {
   document.getElementById('cc-info').classList.add('hidden');
   document.getElementById('cc-field').classList.remove('hidden');
   document.getElementById('cc-result').classList.add('hidden');
+  document.getElementById('cc-best').classList.add('hidden');
   document.getElementById('cc-end-btns').classList.add('hidden');
   document.getElementById('cc-start').classList.add('hidden');
+  document.getElementById('cc-menu').classList.add('hidden');
   document.getElementById('cc-quit').classList.remove('hidden');
   document.getElementById('cc-field').innerHTML = '';
 
@@ -1287,16 +1358,24 @@ function ccEnd() {
   var rank = ccScore >= 50 ? gt('g_whale') : ccScore >= 30 ? gt('g_hodler') : ccScore >= 10 ? gt('g_stacker') : gt('g_nice');
   document.getElementById('cc-result').textContent = ccScore + ' BTC!\n' + rank;
   document.getElementById('cc-result').classList.remove('hidden');
+  var ccBest = getBest('ptm_cc_best');
+  var isNew = ccScore > ccBest;
+  if (isNew) { setBest('ptm_cc_best', ccScore); ccBest = ccScore; }
+  showBest('cc-best', ccBest, isNew);
+  updateCardBests();
   document.getElementById('cc-start').classList.add('hidden');
+  document.getElementById('cc-menu').classList.add('hidden');
   document.getElementById('cc-end-btns').classList.remove('hidden');
   document.getElementById('cc-quit').classList.add('hidden');
 }
 
 function ccReset() {
   document.getElementById('cc-result').classList.add('hidden');
+  document.getElementById('cc-best').classList.add('hidden');
   document.getElementById('cc-end-btns').classList.add('hidden');
   document.getElementById('cc-info').classList.remove('hidden');
   document.getElementById('cc-start').classList.remove('hidden');
+  document.getElementById('cc-menu').classList.remove('hidden');
   document.getElementById('cc-score').textContent = 'BTC: 0';
   document.getElementById('cc-timer').textContent = '60s';
 }

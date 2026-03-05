@@ -12,6 +12,9 @@ backlog/
 .DS_Store
 Thumbs.db
 
+# Playwright MCP
+.playwright-mcp/
+
 # Editor
 .vscode/
 .idea/
