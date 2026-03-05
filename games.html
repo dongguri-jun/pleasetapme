@@ -1159,10 +1159,15 @@ var ccTotalWeight = 0;
 for (var i = 0; i < ccItems.length; i++) ccTotalWeight += ccItems[i].weight;
 
 function ccPickItem() {
-  var r = Math.random() * ccTotalWeight;
+  var mult = ccFiatMult();
+  var total = 0;
+  for (var i = 0; i < ccItems.length; i++) {
+    total += ccItems[i].isBTC ? ccItems[i].weight : ccItems[i].weight * mult;
+  }
+  var r = Math.random() * total;
   var sum = 0;
   for (var i = 0; i < ccItems.length; i++) {
-    sum += ccItems[i].weight;
+    sum += ccItems[i].isBTC ? ccItems[i].weight : ccItems[i].weight * mult;
     if (r <= sum) return ccItems[i];
   }
   return ccItems[0];
@@ -1188,8 +1193,28 @@ function ccStart() {
     if (ccTimer <= 0) ccEnd();
   }, 1000);
 
-  ccSpawnInterval = setInterval(ccSpawn, 500);
+  ccStartTime = Date.now();
+  ccSpawnLoop();
   ccAnimFrame = requestAnimationFrame(ccAnimate);
+}
+
+// Difficulty: elapsed seconds since start
+var ccStartTime = 0;
+function ccElapsed() { return (Date.now() - ccStartTime) / 1000; }
+// Spawn rate: 500ms → 200ms over 60s
+function ccSpawnDelay() { return Math.max(200, 500 - ccElapsed() * 5); }
+// Fall duration: 3000ms → 1200ms over 60s
+function ccFallDuration() {
+  var base = 2500 - ccElapsed() * 25;
+  return Math.max(1200, base) + Math.random() * Math.max(500, 1000 - ccElapsed() * 10);
+}
+// Fiat weight multiplier: 1x → 2x over 60s
+function ccFiatMult() { return 1 + ccElapsed() / 60; }
+
+function ccSpawnLoop() {
+  if (ccTimer <= 0) return;
+  ccSpawn();
+  ccSpawnInterval = setTimeout(ccSpawnLoop, ccSpawnDelay());
 }
 
 // Active coins tracked for JS-driven animation
@@ -1223,7 +1248,7 @@ function ccSpawn() {
   coin.style.left = x + 'px';
   coin.style.top = '-40px';
 
-  var duration = 2000 + Math.random() * 1500;
+  var duration = ccFallDuration();
   var coinData = { el: coin, startTime: Date.now(), duration: duration };
   ccActiveCoins.push(coinData);
 
@@ -1254,7 +1279,7 @@ function ccSpawn() {
 
 function ccEnd() {
   clearInterval(ccInterval);
-  clearInterval(ccSpawnInterval);
+  clearTimeout(ccSpawnInterval);
   if (ccAnimFrame) cancelAnimationFrame(ccAnimFrame);
   ccActiveCoins = [];
   document.getElementById('cc-field').innerHTML = '';
