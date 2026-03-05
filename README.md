@@ -1,6 +1,6 @@
 # PleaseTapMe
 
-![PleaseTapMe](docs/images/main_screenshot.png)
+![PleaseTapMe](assets/main_screenshot.png)
 
 NFC 키링으로 Bitcoin Lightning 결제를 받을 수 있는 웹 런처.
 
