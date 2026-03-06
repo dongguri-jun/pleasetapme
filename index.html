@@ -541,14 +541,16 @@ body::before {
   transition: all 0.15s;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 0 var(--red-shadow);
 }
 
-.lang-bar .game-btn:active { transform: translateY(1px); }
+.lang-bar .game-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--red-shadow); }
 
 .lang-bar .tip-btn {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 700;
+  line-height: 1.2;
   padding: 5px 12px;
   border: 2px solid #8B5E3C;
   border-radius: 20px;
@@ -558,9 +560,29 @@ body::before {
   transition: all 0.15s;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 0 #5C3D28;
 }
 
-.lang-bar .tip-btn:active { transform: translateY(1px); }
+.lang-bar .tip-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #5C3D28; }
+
+.lang-bar .naver-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 5px 12px;
+  border: 2px solid #2DB400;
+  border-radius: 20px;
+  background: #2DB400;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 0 #1E7A00;
+}
+
+.lang-bar .naver-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1E7A00; }
 
 /* ── Game Link (landing) ── */
 .game-link {
@@ -618,6 +640,8 @@ body::before {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 8px;
   order: -1;
   margin-bottom: 4px;
 }
@@ -634,16 +658,20 @@ body::before {
   cursor: pointer;
   transition: all 0.15s;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.15);
 }
 
-.lang-btn:active { transform: translateY(1px); }
+.lang-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.15); }
 
 .lang-btn.active {
   background: var(--white);
   color: var(--text-dark);
   border-color: var(--white);
   font-weight: 700;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.2);
 }
+
+.lang-btn.active:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
 
 .hidden { display: none !important; }
 
@@ -744,11 +772,19 @@ body::before {
   .lang-bar .game-btn {
     background: #c13a4f;
     border-color: #c13a4f;
+    box-shadow: 0 3px 0 #8a2a38;
   }
 
   .lang-bar .tip-btn {
     background: #6d4a2e;
     border-color: #6d4a2e;
+    box-shadow: 0 3px 0 #4a321e;
+  }
+
+  .lang-bar .naver-btn {
+    background: #239600;
+    border-color: #239600;
+    box-shadow: 0 3px 0 #186800;
   }
 
   .btn-nfc {
@@ -779,7 +815,7 @@ body::before {
   <button class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">한국어</button>
   <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
   <button class="lang-btn" data-lang="ja" onclick="setLanguage('ja')">日本語</button>
-  <div class="tip-row"><a href="#ln=dongguri@oksu.su" class="tip-btn" onclick="location.hash='ln=dongguri@oksu.su';location.reload();return false;">☕ Tip a Coffee</a></div>
+  <div class="tip-row"><a href="https://naver.me/GwpTGe8p" class="naver-btn" target="_blank" rel="noopener">📍 Btc Map kr</a><a href="#ln=dongguri@oksu.su" class="tip-btn" onclick="location.hash='ln=dongguri@oksu.su';location.reload();return false;">☕ Tip a Coffee</a></div>
   <a href="games.html" class="game-btn">Game &#127918;</a>
 </div>
 
