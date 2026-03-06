@@ -1289,6 +1289,16 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- GoatCounter analytics -->
+<script>
+  window.goatcounter = {
+    path: function() {
+      var hash = window.location.hash;
+      if (hash.indexOf('#ln=') === 0) return '/pay';
+      if (hash === '#setup') return '/setup';
+      return '/landing';
+    }
+  };
+</script>
 <script data-goatcounter="https://ptmmaster.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
